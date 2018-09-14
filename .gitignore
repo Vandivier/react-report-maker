@@ -61,3 +61,6 @@ typings/
 
 # next.js build output
 .next
+
+# proprietary themes, logo, data, accessible but hidden
+/proprietary
