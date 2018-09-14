@@ -11,12 +11,10 @@ export default class extends Page {
     constructor(props) {
         super(props);
 
-        // TODO: sColor* should be customizable and not default to Halfaker proprietary colors
-        // TODO: maybe theme should be imported and then this.state.theme = import theme
         this.state = {
             instance: this,
             files: [],
-            siThemeChartAxisInterval: '1', // TODO: create UI edit input fields under advanced options. also those should prob me made dynamically from 'themeable state' function which can be used within fHandleDownloadThemeClick
+            siThemeChartAxisInterval: '1',
             siThemeChartBarWidth: '50',
             siThemeChartHeight: '500',
             siThemeChartWidth: '1000',
@@ -106,12 +104,15 @@ export default class extends Page {
 
     fHandleDownloadReportClick = (elReport, _sReportDate, _sReportTitle) => {
         let elHideButtonsRow;
-        const elShadowReport = document.createElement('html'); // it's a clone so we don't mess with the rendered DOM
+        const elShadowReport = document.createElement('html'); // it's a clone (virtual dom) so we don't mess with the rendered DOM
         const sFileName = (_sReportTitle + '-' + _sReportDate).toLowerCase().replace(/[^\w]/g, '-');
 
         elShadowReport.innerHTML = elReport.innerHTML; // clone DOM byval, not byref
         elHideButtonsRow = elShadowReport.querySelector('#HideButtonsRow');
         elHideButtonsRow.parentElement.removeChild(elHideButtonsRow);
+        elShadowReport.querySelector('#DownloadableReport').style;
+        // TODO: add missing style. It should be within downloaded-report.scss, but how can we append that?!?!
+        //      whatver we do, we should be able to append custom style from a text box similarly; and js and html
 
         this.state.fDownload(sFileName + '.html', elShadowReport.innerHTML);
     };

@@ -172,3 +172,6 @@ Note: There are currently no application specific tests, beyond style checking.
     1. in principle this would make for a fully generic report template capability
 
 8. after upload data, pick chart type by question. at least bar, line, pie
+9. color picker on relevant fields ie under advanced options https://casesandberg.github.io/react-color/
+10. create UI edit input fields under advanced options. also those should prob me made dynamically from 'themeable state' function which can be used within fHandleDownloadThemeClick
+11. TODO scraper within files, integrated priority convention and perhaps other task detail convention; LOE, etc
