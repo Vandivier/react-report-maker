@@ -165,3 +165,5 @@ Note: There are currently no application specific tests, beyond style checking.
        X axis is the month
        This is a line graph, with 2 lines represented  
        The line should be colored the dark gray color
+
+6. Testing local credentials
