@@ -56,10 +56,23 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Fragment>
+            <div
+                id="DownloadableReport"
+                style={{
+                    width: '100%',
+                }}
+            >
+                {/* TODO: inject arbitrary html, js, and css here */}
+                {this.props.imageHeader && (
+                    <img
+                        src={this.props.imageHeader.preview}
+                        style={{
+                            width: '100%',
+                        }}
+                    />
+                )}
                 <Jumbotron
                     className="text-light rounded-0"
-                    id="DownloadableReport"
                     style={{
                         backgroundColor: this.props.sThemeColorOffGrey,
                         background:
@@ -71,7 +84,6 @@ export default class extends React.Component {
                         boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
                     }}
                 >
-                    {this.props.imageLogo && <img src={this.props.imageLogo.preview} />}
                     <Container className="mt-2 mb-4">
                         <Row>
                             <h1 className="display-2" style={{ color: this.props.sThemeColorPrimary, fontSize: 32, fontWeight: 'bold' }}>
@@ -140,7 +152,7 @@ export default class extends React.Component {
                         );
                     })}
                 </Jumbotron>
-            </Fragment>
+            </div>
         );
     }
 }

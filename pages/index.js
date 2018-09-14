@@ -83,7 +83,7 @@ export default class extends Page {
 
     fHandleLogoUpload = async files => {
         this.setState({
-            imageLogo: files[0],
+            imageHeader: files[0],
         });
     };
 

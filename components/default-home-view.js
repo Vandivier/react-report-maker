@@ -83,6 +83,7 @@ export default class extends React.Component {
                                 </button>
                             </div>
                         </Row>
+
                         <Row className="col-12">
                             <ReactDropzone
                                 accepts={['.json']}
@@ -129,17 +130,28 @@ export default class extends React.Component {
                                 }}
                             </ReactDropzone>
 
+                            {this.props.imageHeader && (
+                                <img
+                                    src={this.props.imageHeader.preview}
+                                    style={{
+                                        marginLeft: 20,
+                                        marginRight: 20,
+                                        maxHeight: 46, // tallest it can go without expanding row/button height
+                                    }}
+                                />
+                            )}
+                        </Row>
+
+                        <Row className="col-12" style={{ marginTop: 20 }}>
                             <button
                                 className="btn btn-outline-light btn-lg"
                                 onClick={this.fHandleDownloadThemeClick}
-                                style={{
-                                    marginLeft: 20,
-                                }}
                                 title="Download current theme settings as a file you can import later."
                             >
                                 Download Theme
                             </button>
                         </Row>
+
                         {this.state.bShowAdvancedOptions && (
                             <Container>
                                 {this.props.arroColorRanges && (

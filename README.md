@@ -165,3 +165,10 @@ Note: There are currently no application specific tests, beyond style checking.
        X axis is the month
        This is a line graph, with 2 lines represented  
        The line should be colored the dark gray color
+
+6. Throw validation errors to GUI. eg uploading wrong file type is currently uninformative.
+7. Upload arbitrary css, js, and html, which gets included in downloaded report. And make default report hideable
+
+    1. in principle this would make for a fully generic report template capability
+
+8. after upload data, pick chart type by question. at least bar, line, pie
