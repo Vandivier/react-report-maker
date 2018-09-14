@@ -133,4 +133,35 @@ Note: There are currently no application specific tests, beyond style checking.
 
 ## TODO
 
-1 - Express hot module replacement (https://hackernoon.com/hot-reload-all-the-things-ec0fed8ab0)
+1. Express hot module replacement (BE and UI together) (https://hackernoon.com/hot-reload-all-the-things-ec0fed8ab0)
+
+    1. I feel like I posted in the NextJS Spectrum about this...check my emails)
+
+2. Sheet-splitting: pick a column and split that out as it’s own report set; you can pick multiple in order and continually split.
+3. Logo support (partially done)
+
+    1. Logo in the upper right
+    2. Info on how to place the logo is on page 10 and 11 of this style manual on SharePoint
+    3. Top of page is the thick blue bar
+    4. Under the thick blue bar is the thin red bar
+    5. The 2 images are in the center, running through the bars as shown on the attached PPT
+    6. Source files available on SharePoint here
+    7. I want the people one and the data one; I guess there are options, so pick the ones you like
+
+4. All the styles in the report before you download, should be there after you download
+5. Toggle view between the following; the buttons to toggle should have the text in the dark red Halfaker color; Ariel; size 11; bold; all views should default to this month’s results; all graphs should have text set to size 16
+
+    1. this month’s results (bar graph)  
+       Y Axis label = Frequency of Response
+       X Axis label = Value of Response  
+       This includes data only for the current month
+       The line should be colored the happy blue color
+
+    2. trend of all months
+       Includes data from all months
+       1 set of data points are the averages for a given supervisor across the months
+       1 set of data points are the averages for all supervisors across the months
+       Y axis is the value of the response
+       X axis is the month
+       This is a line graph, with 2 lines represented  
+       The line should be colored the dark gray color
