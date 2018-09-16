@@ -14,13 +14,15 @@ export default class extends Page {
         this.state = {
             instance: this,
             files: [],
+            sThemeFontFamily: 'Arial',
             siThemeChartAxisInterval: '1',
             siThemeChartBarWidth: '50',
             siThemeChartHeight: '500',
             siThemeChartWidth: '1000',
             fsThemeColorWithAlpha: function(sThemeColor, sAlpha) {
-                let sRgb = this[sThemeColor] && this[sThemeColor].split('rgb(')[1].split(')')[0];
-                if (!sRgb) sRgb = '0,0,0'; // default to black
+                let sRgb =
+                    (this[sThemeColor] && this[sThemeColor].split('rgb(')[1] && this[sThemeColor].split('rgb(')[1].split(')')[0]) ||
+                    '0,0,0'; // default to black
                 return 'rgba(' + sRgb + ',' + sAlpha + ')';
             },
             // ref: https://stackoverflow.com/a/18197341/3931488
@@ -80,9 +82,18 @@ export default class extends Page {
     };
 
     fHandleLogoUpload = async files => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(files[0]);
+
         this.setState({
             imageHeader: files[0],
         });
+
+        fileReader.onload = event => {
+            this.setState({
+                imageHeaderBas64Source: fileReader.result,
+            });
+        };
     };
 
     // ref: https://stackoverflow.com/questions/49776193/react-open-json-file-via-dialog-and-read-content
@@ -104,27 +115,40 @@ export default class extends Page {
 
     fHandleDownloadReportClick = (elReport, _sReportDate, _sReportTitle) => {
         let elHideButtonsRow;
-        const elShadowReport = document.createElement('html'); // it's a clone (virtual dom) so we don't mess with the rendered DOM
+        const elShadowDocument = document.createElement('html'); // it's a clone byval (virtual dom) so we don't mess with the rendered DOM
+        const elShadowReport = document.createElement('div');
+        const elShadowStyle = document.createElement('style');
         const sFileName = (_sReportTitle + '-' + _sReportDate).toLowerCase().replace(/[^\w]/g, '-');
 
-        elShadowReport.innerHTML = elReport.innerHTML; // clone DOM byval, not byref
+        elShadowReport.innerHTML = elReport.innerHTML;
         elHideButtonsRow = elShadowReport.querySelector('#HideButtonsRow');
         elHideButtonsRow.parentElement.removeChild(elHideButtonsRow);
-        elShadowReport.querySelector('#DownloadableReport').style;
+        elShadowReport.style.fontFamily = this.state.sThemeFontFamily;
+        elShadowReport.id = 'DownloadableReport';
+
+        elShadowDocument.appendChild(elShadowReport);
+
+        // style.next-head + css text
         // TODO: add missing style. It should be within downloaded-report.scss, but how can we append that?!?!
         //      whatver we do, we should be able to append custom style from a text box similarly; and js and html
+        elShadowStyle.appendChild(document.createTextNode(document.querySelector('style.next-head').innerText));
+        elShadowDocument.appendChild(elShadowStyle);
 
-        this.state.fDownload(sFileName + '.html', elShadowReport.innerHTML);
+        this.state.fDownload(sFileName + '.html', elShadowDocument.innerHTML);
     };
 
     render() {
         return (
             <Layout {...this.props} navmenu={false} container={false}>
-                <style>{`
+                <style>
+                    {`
                     body {
-                        font-family: Arial;
+                        font-family: ` +
+                        this.state.sThemeFontFamily +
+                        `;
                     }
-                `}</style>
+                `}
+                </style>
                 {!this.state.oReportData && (
                     <DefaultHomeView
                         {...this.props}

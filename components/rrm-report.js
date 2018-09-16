@@ -63,9 +63,9 @@ export default class extends React.Component {
                 }}
             >
                 {/* TODO: inject arbitrary html, js, and css here */}
-                {this.props.imageHeader && (
+                {this.props.imageHeaderBas64Source && (
                     <img
-                        src={this.props.imageHeader.preview}
+                        src={this.props.imageHeaderBas64Source}
                         style={{
                             width: '100%',
                         }}

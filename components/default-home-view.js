@@ -156,22 +156,23 @@ export default class extends React.Component {
                             <Container>
                                 {this.props.arroColorRanges && (
                                     <Row className="pb-5">
-                                        this.props.arroColorRanges.map((oRange, i) => (
-                                        <Fragment key={'color-range-fragment-' + i}>
-                                            <Col xs="12" sm="3" className="pt-5" key={'color-range-text-' + i}>
-                                                <span>
-                                                    Color for Scores Between {Math.min(...oRange.values)} and {Math.max(...oRange.values)}
-                                                </span>
-                                            </Col>
-                                            <Col xs="12" sm="3" className="pt-5">
-                                                <input
-                                                    type="text"
-                                                    value={oRange.color}
-                                                    onChange={e => this.props.fHandleColorRangeChange(e, oRange, i)}
-                                                />
-                                            </Col>
-                                        </Fragment>
-                                        )
+                                        {this.props.arroColorRanges.map((oRange, i) => {
+                                            <Fragment key={'color-range-fragment-' + i}>
+                                                <Col xs="12" sm="3" className="pt-5" key={'color-range-text-' + i}>
+                                                    <span>
+                                                        Color for Scores Between {Math.min(...oRange.values)} and{' '}
+                                                        {Math.max(...oRange.values)}
+                                                    </span>
+                                                </Col>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        type="text"
+                                                        value={oRange.color}
+                                                        onChange={e => this.props.fHandleColorRangeChange(e, oRange, i)}
+                                                    />
+                                                </Col>
+                                            </Fragment>;
+                                        })}
                                     </Row>
                                 )}
                                 <Row className="pb-5">
