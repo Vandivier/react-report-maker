@@ -138,18 +138,7 @@ Note: There are currently no application specific tests, beyond style checking.
     1. I feel like I posted in the NextJS Spectrum about this...check my emails)
 
 2. Sheet-splitting: pick a column and split that out as it’s own report set; you can pick multiple in order and continually split.
-3. Logo support (partially done)
-
-    1. Logo in the upper right
-    2. Info on how to place the logo is on page 10 and 11 of this style manual on SharePoint
-    3. Top of page is the thick blue bar
-    4. Under the thick blue bar is the thin red bar
-    5. The 2 images are in the center, running through the bars as shown on the attached PPT
-    6. Source files available on SharePoint here
-    7. I want the people one and the data one; I guess there are options, so pick the ones you like
-
-4. All the styles in the report before you download, should be there after you download
-5. Toggle view between the following; the buttons to toggle should have the text in the dark red Halfaker color; Ariel; size 11; bold; all views should default to this month’s results; all graphs should have text set to size 16
+3. Toggle view between the following; the buttons to toggle should have the text in the dark red Halfaker color; Ariel; size 11; bold; all views should default to this month’s results; all graphs should have text set to size 16
 
     1. this month’s results (bar graph)  
        Y Axis label = Frequency of Response
@@ -166,15 +155,15 @@ Note: There are currently no application specific tests, beyond style checking.
        This is a line graph, with 2 lines represented  
        The line should be colored the dark gray color
 
-6. Throw validation errors to GUI. eg uploading wrong file type is currently uninformative.
-7. Upload arbitrary css, js, and html, which gets included in downloaded report. And make default report hideable
+4. Throw validation errors to GUI. eg uploading wrong file type is currently uninformative.
+5. Upload arbitrary css, js, and html, which gets included in downloaded report. And make default report hideable
 
     1. in principle this would make for a fully generic report template capability
 
-8. after upload data, pick chart type by question. at least bar, line, pie
-9. color picker on relevant fields ie under advanced options https://casesandberg.github.io/react-color/
-10. create UI edit input fields under advanced options. also those should prob me made dynamically from 'themeable state' function which can be used within fHandleDownloadThemeClick
-11. TODO scraper within files, integrated priority convention and perhaps other task detail convention; LOE, etc
+6. after upload data, pick chart type by question. at least bar, line, pie
+7. color picker on relevant fields ie under advanced options https://casesandberg.github.io/react-color/
+8. create UI edit input fields under advanced options. also those should prob me made dynamically from 'themeable state' function which can be used within fHandleDownloadThemeClick
+9. TODO scraper within files, integrated priority convention and perhaps other task detail convention; LOE, etc
 
     1. Average Response is for this graph (this subsheet, this period, this response)
     2. You might want to average across periods

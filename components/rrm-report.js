@@ -46,9 +46,11 @@ export default class extends React.Component {
                 iResponseAverage: iResponseValue / iResponseCount,
                 iResponseCount,
                 iResponseValue,
-                margin: 25, // TODO: make customizable? but like how much value is there and do ppl actually care
+                margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
                 selectX: datum => datum.value,
                 selectY: datum => datum.count,
+                sColorGridlines: this.props.sThemeColorPrimary,
+                sColorLabels: this.props.sThemeColorPrimary,
                 width: parseInt(this.props.siThemeChartWidth),
             };
         } catch (e) {

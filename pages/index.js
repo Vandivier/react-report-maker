@@ -14,6 +14,7 @@ export default class extends Page {
         this.state = {
             instance: this,
             files: [],
+            sThemeColorPrimary: 'white',
             sThemeCustomStyle: `body { font-family: Arial; }`, // TODO: interpolate theme colors
             siThemeChartAxisInterval: '1',
             siThemeChartBarWidth: '50',

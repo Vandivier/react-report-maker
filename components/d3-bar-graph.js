@@ -25,7 +25,21 @@ type Props = {
 };
 */
 
-export default ({ barWidth, fValueToColor, data, height, iAxisInterval, iMaxX, iMaxY, margin, selectX, selectY, width }) => {
+export default ({
+    barWidth,
+    fValueToColor,
+    data,
+    height,
+    iAxisInterval,
+    iMaxX,
+    iMaxY,
+    margin,
+    selectX,
+    selectY,
+    sColorGridlines,
+    sColorLabels,
+    width,
+}) => {
     const xScale = d3ScaleLinear()
         .domain([0, iMaxX])
         .range([0, width]);
@@ -53,10 +67,17 @@ export default ({ barWidth, fValueToColor, data, height, iAxisInterval, iMaxX, i
                     .tickFormat('')
             );
 
+        // text label for the x axis
+        svg.append('text')
+            .attr('transform', 'translate(' + width / 2 + ' ,' + (height + 35) + ')')
+            .style('text-anchor', 'middle')
+            .style('fill', sColorLabels)
+            .text('Value');
+
         // add the Y gridlines
         svg.append('g')
             .attr('class', 'gridline')
-            .style('stroke', 'lightgrey')
+            .style('stroke', sColorGridlines)
             .call(
                 d3
                     .axisLeft(yScale)
@@ -64,7 +85,17 @@ export default ({ barWidth, fValueToColor, data, height, iAxisInterval, iMaxX, i
                     .tickFormat('')
             );
 
-        d3.selectAll('g line').style('stroke', 'lightgrey');
+        // text label for the y axis
+        svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - margin)
+            .attr('x', 0 - height / 2)
+            .attr('dy', '20')
+            .style('text-anchor', 'middle')
+            .style('fill', sColorLabels)
+            .text('Count');
+
+        d3.selectAll('g line').style('stroke', sColorGridlines);
     };
 
     return (
