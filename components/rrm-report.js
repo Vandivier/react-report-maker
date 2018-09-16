@@ -1,11 +1,9 @@
-import { interpolateLab } from 'd3-interpolate';
-import { scaleLinear } from 'd3-scale';
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { Container, Row, Col, Button, Jumbotron } from 'reactstrap';
+import { Container, Row, Jumbotron } from 'reactstrap';
 
 import D3BarGraph from './d3-bar-graph';
-import { runInDebugContext } from 'vm';
+import IconLineGraph from './icon-line-graph';
 
 export default class extends React.Component {
     constructor(props) {
@@ -13,6 +11,7 @@ export default class extends React.Component {
 
         this.state = {
             arrarroGraphDatas: props.oReportData.arrarroGraphDatas,
+            bLineGraphMode: false,
             iMaxX: 10 + 0.5, // TODO: make it a spreadsheet meta val, but still add the .5 so we don't clip bar
             sReportDate: props.oReportData.arrsMetadata[4],
             iMaxY: props.oReportData.arrsMetadata[6],
@@ -23,6 +22,8 @@ export default class extends React.Component {
             const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
             return oMatch && oMatch.color; // if !oMatch, d3 is expected to render black by default
         };
+
+        this.fHandleLineGraphClick = this.fToggleLineGraphView.bind(this);
     }
 
     foBarGraphProps(_oGraphData) {
@@ -69,6 +70,38 @@ export default class extends React.Component {
         }
     }
 
+    // indirectly cause rerender using setState
+    // ref: https://stackoverflow.com/questions/42630473/react-toggle-class-onclick
+    // ref: https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
+    fToggleLineGraphView(e) {
+        const bNewLineGraphMode = !this.state.bLineGraphMode;
+        let sIconBackgroundColor;
+        let sIconBorderColor;
+        let sIconPrimaryLineColor;
+        let sIconSecondaryLineColor;
+
+        if (bNewLineGraphMode) {
+            sIconBackgroundColor = 'lightgrey';
+            sIconBorderColor = 'lightgrey';
+            sIconPrimaryLineColor = 'black';
+            sIconSecondaryLineColor = 'black';
+        } else {
+            sIconBackgroundColor = 'white';
+            sIconBorderColor = 'white';
+            sIconPrimaryLineColor = 'black';
+            sIconSecondaryLineColor = 'black';
+        }
+
+        // do the toggle
+        this.setState({
+            bLineGraphMode: bNewLineGraphMode,
+            sIconBackgroundColor,
+            sIconBorderColor,
+            sIconPrimaryLineColor,
+            sIconSecondaryLineColor,
+        });
+    }
+
     render() {
         return (
             <div
@@ -77,6 +110,28 @@ export default class extends React.Component {
                     width: '100%',
                 }}
             >
+                <div
+                    className="icon-container"
+                    onClick={this.fHandleLineGraphClick}
+                    style={{
+                        border: '1px solid ' + this.props.sThemeColorPrimary,
+                        borderRadius: '.25em',
+                        position: 'fixed',
+                        right: 5,
+                        top: '20%',
+                        width: '30px',
+                    }}
+                >
+                    {/* TODO: have iconlinegraph, iconbargraph, and iconpiegraph */}
+                    <IconLineGraph
+                        {...{
+                            sIconBackgroundColor: this.state.sIconBackgroundColor,
+                            sIconBorderColor: this.state.sIconBorderColor,
+                            sIconPrimaryLineColor: this.state.sIconPrimaryLineColor,
+                            sIconSecondaryLineColor: this.state.sIconSecondaryLineColor,
+                        }}
+                    />
+                </div>
                 {/* TODO: inject arbitrary html, js, and css here */}
                 {this.props.imageHeaderBas64Source && (
                     <img
