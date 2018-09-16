@@ -34,10 +34,12 @@ export default ({
     iMaxX,
     iMaxY,
     margin,
-    selectX,
-    selectY,
     sColorGridlines,
     sColorLabels,
+    selectX,
+    selectY,
+    sXAxisLabel,
+    sYAxisLabel,
     width,
 }) => {
     const xScale = d3ScaleLinear()
@@ -72,7 +74,7 @@ export default ({
             .attr('transform', 'translate(' + width / 2 + ' ,' + (height + 35) + ')')
             .style('text-anchor', 'middle')
             .style('fill', sColorLabels)
-            .text('Value');
+            .text(sXAxisLabel);
 
         // add the Y gridlines
         svg.append('g')
@@ -93,7 +95,7 @@ export default ({
             .attr('dy', '20')
             .style('text-anchor', 'middle')
             .style('fill', sColorLabels)
-            .text('Count');
+            .text(sYAxisLabel);
 
         d3.selectAll('g line').style('stroke', sColorGridlines);
     };
@@ -108,18 +110,16 @@ export default ({
             }
             
             .d3-bar-graph-container > .contentContainer .xAxis text {
-                font-size: 8px;
+                font-size: 12px;
+            }
+            
+            .d3-bar-graph-container > .contentContainer .yAxis text {
+                font-size: 12px;
             }
             
             .d3-bar-graph-container > .contentContainer .line path {
                 fill: transparent;
                 stroke: #29b6f6;
-                stroke-width: 2;
-            }
-            
-            .d3-bar-graph-container > .contentContainer .scatter circle {
-                fill: #5c6bc0;
-                stroke: #fafafa;
                 stroke-width: 2;
             }
             `}

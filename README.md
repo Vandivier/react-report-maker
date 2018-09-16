@@ -138,25 +138,20 @@ Note: There are currently no application specific tests, beyond style checking.
     1. I feel like I posted in the NextJS Spectrum about this...check my emails)
 
 2. Sheet-splitting: pick a column and split that out as it’s own report set; you can pick multiple in order and continually split.
+
 3. Toggle view between the following; the buttons to toggle should have the text in the dark red Halfaker color; Ariel; size 11; bold; all views should default to this month’s results; all graphs should have text set to size 16
 
-    1. this month’s results (bar graph)  
-       Y Axis label = Frequency of Response
-       X Axis label = Value of Response  
-       This includes data only for the current month
-       The line should be colored the happy blue color
-
     2. trend of all months
-       Includes data from all months
-       1 set of data points are the averages for a given supervisor across the months
-       1 set of data points are the averages for all supervisors across the months
-       Y axis is the value of the response
        X axis is the month
+       Y axis is the value of the response
        This is a line graph, with 2 lines represented  
+       1 set of data points are the averages for a given supervisor across the months
+       this line is a happy blue color?
+       1 set of data points are the averages for all supervisors across the months
        The line should be colored the dark gray color
 
 4. Throw validation errors to GUI. eg uploading wrong file type is currently uninformative.
-5. Upload arbitrary css, js, and html, which gets included in downloaded report. And make default report hideable
+5. Upload arbitrary css, js, and html, which gets included in downloaded report. And make default report hideable. CSS already done. HTML use case: analyst release notes (eg this time we changed question 5)
 
     1. in principle this would make for a fully generic report template capability
 

@@ -47,10 +47,12 @@ export default class extends React.Component {
                 iResponseCount,
                 iResponseValue,
                 margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
+                sColorGridlines: this.props.sThemeColorOffWhite,
+                sColorLabels: this.props.sThemeColorPrimary,
                 selectX: datum => datum.value,
                 selectY: datum => datum.count,
-                sColorGridlines: this.props.sThemeColorPrimary,
-                sColorLabels: this.props.sThemeColorPrimary,
+                sXAxisLabel: this.props.sDataXAxisLabel,
+                sYAxisLabel: this.props.sDataYAxisLabel,
                 width: parseInt(this.props.siThemeChartWidth),
             };
         } catch (e) {

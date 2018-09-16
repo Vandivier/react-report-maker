@@ -14,6 +14,8 @@ export default class extends Page {
         this.state = {
             instance: this,
             files: [],
+            sDataXAxisLabel: 'Value of Response',
+            sDataYAxisLabel: 'Frequency of Response',
             sThemeColorPrimary: 'white',
             sThemeCustomStyle: `body { font-family: Arial; }`, // TODO: interpolate theme colors
             siThemeChartAxisInterval: '1',
