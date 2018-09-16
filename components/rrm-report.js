@@ -27,14 +27,25 @@ export default class extends React.Component {
 
     foBarGraphProps(_oGraphData) {
         try {
+            let iResponseCount = 0;
+            let iResponseValue = 0;
+
+            _oGraphData.arroGraphData.forEach(oGraphData => {
+                iResponseCount += oGraphData.count;
+                iResponseValue += oGraphData.count * oGraphData.value;
+            });
+
             return {
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
-                fValueToColor: this.fValueToColor,
                 data: _oGraphData.arroGraphData,
+                fValueToColor: this.fValueToColor,
                 height: parseInt(this.props.siThemeChartHeight),
                 iAxisInterval: parseInt(this.props.siThemeChartAxisInterval),
                 iMaxX: this.state.iMaxX,
                 iMaxY: this.state.iMaxY,
+                iResponseAverage: iResponseValue / iResponseCount,
+                iResponseCount,
+                iResponseValue,
                 margin: 25, // TODO: make customizable? but like how much value is there and do ppl actually care
                 selectX: datum => datum.value,
                 selectY: datum => datum.count,
@@ -121,8 +132,10 @@ export default class extends React.Component {
                     </Container>
 
                     {this.state.arrarroGraphDatas.map((oGraphData, i) => {
+                        const oMassagedData = this.foBarGraphProps(oGraphData);
+
                         return (
-                            <Container className="" key={'graph-container-' + i}>
+                            <Container key={'graph-container-' + i}>
                                 <h3
                                     className="graph-title"
                                     key={'graph-title-' + i}
@@ -133,21 +146,28 @@ export default class extends React.Component {
                                 >
                                     {oGraphData.sGraphTitle}
                                 </h3>
-                                <span
-                                    key={'graph-response-count-' + i}
-                                    style={{
-                                        color: this.props.sThemeColorOffWhite,
-                                        fontSize: 14,
-                                    }}
-                                >
-                                    Response Count: {oGraphData.arroGraphData.reduce((iAcc, oGraphData) => iAcc + oGraphData.count, 0)} /{' '}
-                                    {this.state.iMaxY}
-                                </span>
-                                <D3BarGraph {...this.foBarGraphProps(oGraphData)} key={'graph-' + i} />
+                                <p className="graph-info" key={'graph-response-average-' + i} title={oMassagedData.iResponseAverage}>
+                                    Average Response: {oMassagedData.iResponseAverage.toFixed(2)}
+                                </p>
+                                <p className="graph-info" key={'graph-response-count-' + i}>
+                                    Response Count: {oMassagedData.iResponseCount} / {this.state.iMaxY}
+                                </p>
+
+                                <D3BarGraph {...oMassagedData} key={'graph-' + i} />
 
                                 {/* TODO: trend line over time for given person and question
-                                    <D3LineGraph {...this.foBarGraphProps(oGraphData)} key={'graph-' + i} />
+                                    <D3LineGraph {...oMassagedData} key={'graph-' + i} />
                                 */}
+
+                                <style jsx>
+                                    {`
+                                        .graph-info {
+                                            color: ${this.props.sThemeColorOffWhite ? this.props.sThemeColorOffWhite : 'inherit'};
+                                            font-size: 14px;
+                                            margin-bottom: 0;
+                                        }
+                                    `}
+                                </style>
                             </Container>
                         );
                     })}

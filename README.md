@@ -175,3 +175,8 @@ Note: There are currently no application specific tests, beyond style checking.
 9. color picker on relevant fields ie under advanced options https://casesandberg.github.io/react-color/
 10. create UI edit input fields under advanced options. also those should prob me made dynamically from 'themeable state' function which can be used within fHandleDownloadThemeClick
 11. TODO scraper within files, integrated priority convention and perhaps other task detail convention; LOE, etc
+
+    1. Average Response is for this graph (this subsheet, this period, this response)
+    2. You might want to average across periods
+    3. across subsheets (eg other people asked same question this period)
+    4. or both (all people asked this question over all time)
