@@ -243,6 +243,17 @@ export default class extends React.Component {
                                         />
                                     </Col>
                                 </Row>
+                                <Row style={{ alignItems: 'baseline' }}>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Custom Style (CSS)</span>
+                                    </Col>
+                                    <textarea
+                                        className="col-xs-12 col-sm-9"
+                                        name="sThemeCustomStyle"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        value={this.props.sThemeCustomStyle}
+                                    />
+                                </Row>
                             </Container>
                         )}
                         <style jsx>{`

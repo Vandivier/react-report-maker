@@ -14,7 +14,7 @@ export default class extends Page {
         this.state = {
             instance: this,
             files: [],
-            sThemeFontFamily: 'Arial',
+            sThemeCustomStyle: `body { font-family: Arial; }`, // TODO: interpolate theme colors
             siThemeChartAxisInterval: '1',
             siThemeChartBarWidth: '50',
             siThemeChartHeight: '500',
@@ -123,7 +123,6 @@ export default class extends Page {
         elShadowReport.innerHTML = elReport.innerHTML;
         elHideButtonsRow = elShadowReport.querySelector('#HideButtonsRow');
         elHideButtonsRow.parentElement.removeChild(elHideButtonsRow);
-        elShadowReport.style.fontFamily = this.state.sThemeFontFamily;
         elShadowReport.id = 'DownloadableReport';
 
         elShadowDocument.appendChild(elShadowReport);
@@ -132,6 +131,7 @@ export default class extends Page {
         // TODO: add missing style. It should be within downloaded-report.scss, but how can we append that?!?!
         //      whatver we do, we should be able to append custom style from a text box similarly; and js and html
         elShadowStyle.appendChild(document.createTextNode(document.querySelector('style.next-head').innerText));
+        elShadowStyle.appendChild(document.createTextNode(this.state.sThemeCustomStyle));
         elShadowDocument.appendChild(elShadowStyle);
 
         this.state.fDownload(sFileName + '.html', elShadowDocument.innerHTML);
@@ -140,15 +140,7 @@ export default class extends Page {
     render() {
         return (
             <Layout {...this.props} navmenu={false} container={false}>
-                <style>
-                    {`
-                    body {
-                        font-family: ` +
-                        this.state.sThemeFontFamily +
-                        `;
-                    }
-                `}
-                </style>
+                <style>{this.state.sThemeCustomStyle}</style>
                 {!this.state.oReportData && (
                     <DefaultHomeView
                         {...this.props}
