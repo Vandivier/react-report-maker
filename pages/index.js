@@ -45,6 +45,24 @@ export default class extends Page {
                 document.body.removeChild(element);
             },
         };
+
+        this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
+    }
+
+    farrProcessReport(arr) {
+        return arr.map((oReportData, i) =>
+            Object.assign(
+                {
+                    iId: i,
+                    iMaxY: oReportData.arrsMetadata[6],
+                    iPriority: i,
+                    sReportDate: oReportData.arrsMetadata[4],
+                    sReportTitle: oReportData.arrsMetadata[2],
+                    sLabel: oReportData.arrsMetadata[4] || oReportData.arrsMetadata[2], // TODO: file name as additional fallback?
+                },
+                oReportData
+            )
+        );
     }
 
     fHandleChange(e) {
@@ -68,19 +86,44 @@ export default class extends Page {
         });
     }
 
+    fHandleReportDataChange = (e, oUpdatedReport) => {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            arroReportDatas: this.state.arroReportDatas.map(_oReport => {
+                if (_oReport.iId === oUpdatedReport.iId) {
+                    // TODO: could handle evaluating priority on user's behalf
+                    return Object.assign(oUpdatedReport, { [name]: value });
+                } else {
+                    return _oReport;
+                }
+            }),
+        });
+    };
+
     fHandleReportDataUpload = async files => {
-        const formdata = new FormData();
+        const arroExistingReportData = this.state.arroReportDatas || [];
+        let arroPromises = [];
+        let arroResponses = [];
 
         if (!files[0]) return Promise.resolve();
-        formdata.append('reportInputData', files[0]);
 
-        const oResponse = await this.mBaseService.fpPost('/reports', {
-            oFormData: formdata,
+        arroPromises = files.map(file => {
+            const formdata = new FormData();
+            formdata.append('reportInputData', file);
+
+            return this.mBaseService.fpPost('/reports', {
+                oFormData: formdata,
+            });
         });
 
-        if (oResponse) {
+        arroResponses = await Promise.all(arroPromises);
+
+        if (arroResponses.length) {
             this.setState({
-                oReportData: oResponse,
+                arroReportDatas: this.farrProcessReport(arroExistingReportData.concat(arroResponses)),
             });
         } else {
             // TODO: handle
@@ -154,6 +197,7 @@ export default class extends Page {
                         fHandleChange={this.fHandleChange}
                         fHandleColorRangeChange={this.fHandleColorRangeChange}
                         fHandleLogoUpload={this.fHandleLogoUpload}
+                        fHandleReportDataChange={this.fHandleReportDataChange}
                         fHandleReportDataUpload={this.fHandleReportDataUpload}
                         fHandleThemeJsonUpload={this.fHandleThemeJsonUpload}
                         files={this.state.files}

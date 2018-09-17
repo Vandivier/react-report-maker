@@ -49,12 +49,29 @@ export default class extends React.Component {
                         </h1>
                         <p className="lead mb-5">Input data, get graphic reports</p>
                         <Row className="col-12" style={{ marginBottom: 20 }}>
+                            {this.props.arroReportDatas &&
+                                this.props.arroReportDatas.length && (
+                                    <button
+                                        className="btn btn-outline-light btn-lg"
+                                        onClick={e => this.setState({ bShowAdvancedOptions: !this.state.bShowAdvancedOptions })}
+                                        title="Click to edit advanced settings like theme colors."
+                                    >
+                                        View Report
+                                    </button>
+                                )}
+
                             <div className="text-left">
                                 <ReactDropzone
                                     accept=".txt"
-                                    className="btn btn-outline-light btn-lg"
-                                    multiple={false}
+                                    className={'btn btn-outline-light btn-lg'}
+                                    multiple={true}
                                     onDrop={this.props.fHandleReportDataUpload.bind(this)}
+                                    style={
+                                        this.props.arroReportDatas &&
+                                        this.props.arroReportDatas.length && {
+                                            marginLeft: 20,
+                                        }
+                                    }
                                     title="Drag and drop or click to select a data file containing tab-separated values."
                                 >
                                     {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
@@ -83,6 +100,51 @@ export default class extends React.Component {
                                 </button>
                             </div>
                         </Row>
+
+                        {this.props.arroReportDatas &&
+                            this.props.arroReportDatas.length && (
+                                <Container>
+                                    <Row>
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>Report Title</span>
+                                        </Col>
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>Report X-Axis Label</span>
+                                        </Col>
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>Report Order Number (0 is Current Period)</span>
+                                        </Col>
+                                    </Row>
+                                    {this.props.arroReportDatas.map((oReportData, i) => (
+                                        <Row className="pb-5" key={'report-data-fragment-' + i}>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <input
+                                                    name="sReportTitle"
+                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                    type="text"
+                                                    value={oReportData.sReportTitle}
+                                                />
+                                            </Col>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <input
+                                                    name="sLabel"
+                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                    type="text"
+                                                    value={oReportData.sLabel}
+                                                />
+                                            </Col>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <input
+                                                    name="iPriority"
+                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                    type="text"
+                                                    value={oReportData.iPriority}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                </Container>
+                            )}
 
                         <Row className="col-12">
                             <ReactDropzone

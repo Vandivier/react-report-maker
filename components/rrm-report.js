@@ -13,12 +13,12 @@ export default class extends React.Component {
             arrarroGraphDatas: props.oReportData.arrarroGraphDatas,
             bLineGraphMode: false,
             iMaxX: 10 + 0.5, // TODO: make it a spreadsheet meta val, but still add the .5 so we don't clip bar
-            iMaxY: props.oReportData.arrsMetadata[6],
+            iMaxY: props.oReportData.iMaxY,
             sInitialIconBackgroundColor: 'rgb(230,230,230)',
             sInitialIconPrimaryLineColor: 'black',
             sInitialIconSecondaryLineColor: 'black',
-            sReportDate: props.oReportData.arrsMetadata[4],
-            sReportTitle: props.oReportData.arrsMetadata[2],
+            sReportDate: props.oReportData.sReportDate,
+            sReportTitle: props.oReportData.sReportTitle,
         };
 
         this.state.sIconBackgroundColor = this.props.sThemeColorOffWhite;
