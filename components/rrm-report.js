@@ -57,14 +57,14 @@ export default class extends React.Component {
             let iResponseCount = 0;
             let iResponseValue = 0;
 
-            _oGraphData.arroGraphData.forEach(oGraphData => {
+            _oGraphData.arroColumnCells.forEach(oGraphData => {
                 iResponseCount += oGraphData.count;
                 iResponseValue += oGraphData.count * oGraphData.value;
             });
 
             return {
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
-                data: _oGraphData.arroGraphData,
+                data: _oGraphData.arroColumnCells,
                 fLinePathToColor: this.state.fLinePathToColor, // TODO: maybe pass indirectly
                 fValueToColor: this.state.fValueToColor, // TODO: maybe pass indirectly
                 height: parseInt(this.props.siThemeChartHeight),

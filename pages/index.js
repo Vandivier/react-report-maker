@@ -105,7 +105,7 @@ export default class extends Page {
     // if you use the LineGraphVariable option, you can only upload one master spreadsheet
     // given one report (a panelreport, or master spreadsheet, or panel-in-report), split it into arr of report
     // server will do the splitting
-    fHandlePanelLineGraphVariableChange(e) {
+    fHandlePanelLineGraphVariableChange = async e => {
         const iColumnDiscriminator = e.target.value;
         const oExistingReport = this.state.arrFiles[0];
         let arroResponses = [];
@@ -136,7 +136,7 @@ export default class extends Page {
         } else {
             // TODO: handle
         }
-        
+
         /*
         const target = e.target;
         const iColumnDiscriminator = target.value;
@@ -157,7 +157,7 @@ export default class extends Page {
             [name]: value,
         });
         */
-    }
+    };
 
     // TODO: maybe some code dup with farrProcessReport
     fHandleReportDataChange = (e, oUpdatedReport) => {
@@ -201,7 +201,7 @@ export default class extends Page {
         if (arroResponses.length) {
             arroNewReportDatas = this.farrProcessReport(arroExistingReportData.concat(arroResponses));
             this.setState({
-                arroFiles: files,
+                arrFiles: files,
                 arroReportDatas: arroNewReportDatas,
                 iPanelMaxX: arroNewReportDatas[0].iMaxX,
                 sPanelTitle: arroNewReportDatas[0].sReportTitle,
