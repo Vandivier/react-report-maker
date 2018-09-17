@@ -36,7 +36,7 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
         // transpose
         // ref: https://stackoverflow.com/a/17428705/3931488
         oResponse.arrarrsColumns = arrarrsCellsByRow.map((sCell, i, _arr) => _arr.map(row => row[i]));
-        oResponse.arrarroGraphDatas = oResponse.arrarrsColumns.slice(1, oResponse.arrarrsColumns.length).map(arrsColumnCells => {
+        oResponse.arrarroColumns = oResponse.arrarrsColumns.slice(1, oResponse.arrarrsColumns.length).map(arrsColumnCells => {
             let arroGraphData = [];
             let i = 10;
             const sGraphTitle = arrsColumnCells[0];

@@ -26,8 +26,24 @@ export default class extends React.Component {
             return oMatch && oMatch.color; // if !oMatch, d3 is expected to render black by default
         };
 
+        this.fParsePanelColumns();
+
         this.fHandleLineGraphClick = this.fToggleLineGraphView.bind(this);
         this.foBarGraphProps = this.foBarGraphProps.bind(this);
+    }
+
+    // TODO: today we take the first report's questions/columns (this.state.arroColumns)
+    //      but, we could loop through all reports and create a superset of questions/columns that exist on any report
+    // TODO: prerender bar charts for all t, unless it creates perf load or extreme file size bloat
+    fParsePanelColumns() {
+        this.state.arroPanelColumns = [];
+
+        this.props.arroReportDatas.forEach((oReportData, iReport) => {
+            oReportData.arrarroColumns.map((oGraphData, iColumn) => {
+                this.state.arroPanelColumns[iColumn] = this.state.arroPanelColumns[iColumn] || [];
+                this.state.arroPanelColumns[iColumn].push(this.foBarGraphProps(oReportData, oGraphData));
+            });
+        });
     }
 
     // graphdata is like a single question on a single report
@@ -194,12 +210,8 @@ export default class extends React.Component {
                         </Row>
                     </Container>
 
-                    {this.props.arroReportDatas.map((oReportData, iColumn) => {
-                        // TODO: prerender bar charts for all t, unless it creates perf load or extreme file size bloat
-                        const arroRelatedPanel = oReportData.arrarroGraphDatas.map(oGraphData =>
-                            this.foBarGraphProps(oReportData, oGraphData)
-                        );
-                        const oMassagedData = arroRelatedPanel[0];
+                    {this.state.arroPanelColumns.map((arroColumnDataByReport, iColumn) => {
+                        const oMassagedData = arroColumnDataByReport[0];
 
                         return (
                             <Container key={'graph-container-' + iColumn}>
@@ -235,7 +247,7 @@ export default class extends React.Component {
                                     <D3BarGraph {...oMassagedData} key={'bar-graph-' + iColumn} />
                                 </div>
                                 <div style={{ display: !this.state.bLineGraphMode ? 'none' : 'initial' }}>
-                                    <D3LineGraph {...oMassagedData} {...arroRelatedPanel} key={'line-graph-' + iColumn} />
+                                    <D3LineGraph {...oMassagedData} {...arroColumnDataByReport} key={'line-graph-' + iColumn} />
                                 </div>
                                 <style jsx>
                                     {`
