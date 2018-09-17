@@ -48,7 +48,9 @@ export default class extends Page {
             },
         };
 
+        this.fHandleChange = this.fHandleChange.bind(this);
         this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
+        this.fHandlePanelLineGraphVariableChange = this.fHandlePanelLineGraphVariableChange.bind(this);
         this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
         this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
     }
@@ -84,7 +86,7 @@ export default class extends Page {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        this.instance.setState({
+        this.setState({
             [name]: value,
         });
     }
@@ -98,6 +100,63 @@ export default class extends Page {
         this.instance.setState({
             arroColorRanges: arroNewColorRanges,
         });
+    }
+
+    // if you use the LineGraphVariable option, you can only upload one master spreadsheet
+    // given one report (a panelreport, or master spreadsheet, or panel-in-report), split it into arr of report
+    // server will do the splitting
+    fHandlePanelLineGraphVariableChange(e) {
+        const iColumnDiscriminator = e.target.value;
+        const oExistingReport = this.state.arrFiles[0];
+        let arroResponses = [];
+
+        if (!files[0]) return Promise.resolve();
+
+        arroPromises = [oExistingReport].map(file => {
+            const formdata = new FormData();
+            formdata.append('reportInputData', file);
+
+            return this.mBaseService.fpPost('/reports/split-panel-by-column', {
+                oFormData: formdata,
+                iColumnDiscriminator: iColumnDiscriminator,
+            });
+        });
+
+        arroResponses = await Promise.all(arroPromises);
+
+        if (arroResponses.length) {
+            arroNewReportDatas = this.farrProcessReport(arroResponses);
+            this.setState({
+                arroFiles: files,
+                arroReportDatas: arroNewReportDatas,
+                //iPanelMaxX: arroNewReportDatas[0].iMaxX,
+                //sPanelTitle: arroNewReportDatas[0].sReportTitle,
+                [e.target.name]: iColumnDiscriminator,
+            });
+        } else {
+            // TODO: handle
+        }
+        
+        /*
+        const target = e.target;
+        const iColumnDiscriminator = target.value;
+        const oLineGraphVariableMap = {};
+        const name = target.name;
+        //const arroNewReportDatas = this.farrProcessReport(oExistingReport.map(oReportData => {}));
+
+        arroExistingReportData.arrarroColumns[iColumnDiscriminator];
+        oExistingReport.forEach((oReportData, i) => {
+            const sReportDiscriminator = oReportData[iColumnDiscriminator];
+            oLineGraphVariableMap[sReportDiscriminator] = (oLineGraphVariableMap[sReportDiscriminator] || []).concat();
+        });
+
+        debugger;
+
+        this.setState({
+            arroReportDatas: this.farrProcessReport(Object.keys(oLineGraphVariableMap).map(sKey => oLineGraphVariableMap[sKey])),
+            [name]: value,
+        });
+        */
     }
 
     // TODO: maybe some code dup with farrProcessReport
@@ -142,6 +201,7 @@ export default class extends Page {
         if (arroResponses.length) {
             arroNewReportDatas = this.farrProcessReport(arroExistingReportData.concat(arroResponses));
             this.setState({
+                arroFiles: files,
                 arroReportDatas: arroNewReportDatas,
                 iPanelMaxX: arroNewReportDatas[0].iMaxX,
                 sPanelTitle: arroNewReportDatas[0].sReportTitle,
@@ -219,6 +279,7 @@ export default class extends Page {
                         fHandleChange={this.fHandleChange}
                         fHandleColorRangeChange={this.fHandleColorRangeChange}
                         fHandleLogoUpload={this.fHandleLogoUpload}
+                        fHandlePanelLineGraphVariableChange={this.fHandlePanelLineGraphVariableChange}
                         fHandleReportDataChange={this.fHandleReportDataChange}
                         fHandleReportDataUpload={this.fHandleReportDataUpload}
                         fHandleThemeJsonUpload={this.fHandleThemeJsonUpload}

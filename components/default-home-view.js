@@ -130,7 +130,7 @@ export default class extends React.Component {
                                             <Col>
                                                 <input
                                                     name="sPanelColumn"
-                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    onChange={e => this.props.fHandlePanelLineGraphVariableChange(e)}
                                                     type="text"
                                                     value={this.props.sPanelColumn}
                                                 />
