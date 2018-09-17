@@ -13,10 +13,17 @@ export default class extends React.Component {
             arrarroGraphDatas: props.oReportData.arrarroGraphDatas,
             bLineGraphMode: false,
             iMaxX: 10 + 0.5, // TODO: make it a spreadsheet meta val, but still add the .5 so we don't clip bar
-            sReportDate: props.oReportData.arrsMetadata[4],
             iMaxY: props.oReportData.arrsMetadata[6],
+            sInitialIconBackgroundColor: 'rgb(230,230,230)',
+            sInitialIconPrimaryLineColor: 'black',
+            sInitialIconSecondaryLineColor: 'black',
+            sReportDate: props.oReportData.arrsMetadata[4],
             sReportTitle: props.oReportData.arrsMetadata[2],
         };
+
+        this.state.sIconBackgroundColor = this.props.sThemeColorOffWhite;
+        this.state.sIconPrimaryLineColor = this.props.sThemeColorPrimary;
+        this.state.sIconSecondaryLineColor = this.props.sThemeColorSecondary;
 
         this.fValueToColor = iValue => {
             const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
@@ -76,27 +83,23 @@ export default class extends React.Component {
     fToggleLineGraphView(e) {
         const bNewLineGraphMode = !this.state.bLineGraphMode;
         let sIconBackgroundColor;
-        let sIconBorderColor;
         let sIconPrimaryLineColor;
         let sIconSecondaryLineColor;
 
         if (bNewLineGraphMode) {
-            sIconBackgroundColor = 'lightgrey';
-            sIconBorderColor = 'lightgrey';
-            sIconPrimaryLineColor = 'black';
-            sIconSecondaryLineColor = 'black';
+            sIconBackgroundColor = this.state.sInitialIconBackgroundColor;
+            sIconPrimaryLineColor = this.state.sInitialIconPrimaryLineColor;
+            sIconSecondaryLineColor = this.state.sInitialIconSecondaryLineColor;
         } else {
-            sIconBackgroundColor = 'white';
-            sIconBorderColor = 'white';
-            sIconPrimaryLineColor = 'black';
-            sIconSecondaryLineColor = 'black';
+            sIconBackgroundColor = this.props.sThemeColorOffWhite;
+            sIconPrimaryLineColor = this.props.sThemeColorPrimary;
+            sIconSecondaryLineColor = this.props.sThemeColorSecondary;
         }
 
         // do the toggle
         this.setState({
             bLineGraphMode: bNewLineGraphMode,
             sIconBackgroundColor,
-            sIconBorderColor,
             sIconPrimaryLineColor,
             sIconSecondaryLineColor,
         });
@@ -114,19 +117,22 @@ export default class extends React.Component {
                     className="icon-container"
                     onClick={this.fHandleLineGraphClick}
                     style={{
-                        border: '1px solid ' + this.props.sThemeColorPrimary,
-                        borderRadius: '.25em',
+                        cursor: 'pointer',
                         position: 'fixed',
                         right: 5,
                         top: '20%',
                         width: '30px',
                     }}
+                    title={
+                        this.state.bLineGraphMode
+                            ? 'Return to bar graph view of current period data.'
+                            : 'View line graph representation of data over time.'
+                    }
                 >
                     {/* TODO: have iconlinegraph, iconbargraph, and iconpiegraph */}
                     <IconLineGraph
                         {...{
                             sIconBackgroundColor: this.state.sIconBackgroundColor,
-                            sIconBorderColor: this.state.sIconBorderColor,
                             sIconPrimaryLineColor: this.state.sIconPrimaryLineColor,
                             sIconSecondaryLineColor: this.state.sIconSecondaryLineColor,
                         }}
@@ -187,6 +193,14 @@ export default class extends React.Component {
                             >
                                 Download Report Data
                             </button>
+                            <style jsx>
+                                {`
+                                    button {
+                                        border-color: ${this.props.sThemeColorOffWhite};
+                                        color: ${this.props.sThemeColorOffWhite};
+                                    }
+                                `}
+                            </style>
                         </Row>
                     </Container>
 

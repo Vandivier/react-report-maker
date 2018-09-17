@@ -16,7 +16,10 @@ export default class extends Page {
             files: [],
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
-            sThemeColorPrimary: 'white',
+            sThemeColorOffWhite: 'lightcyan',
+            sThemeColorOffGrey: 'silver',
+            sThemeColorPrimary: '#97dcdc',
+            sThemeColorSecondary: 'darkcyan',
             sThemeCustomStyle: `body { font-family: Arial; }`, // TODO: interpolate theme colors
             siThemeChartAxisInterval: '1',
             siThemeChartBarWidth: '50',
