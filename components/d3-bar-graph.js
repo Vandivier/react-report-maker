@@ -2,9 +2,7 @@
 // ref: gridlines: https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
 // ref: react-faux-dom: https://vijayt.com/post/plotting-bar-chart-d3-react/
 
-import * as d3 from 'd3';
 import React, { Fragment } from 'react';
-import { Element } from 'react-faux-dom';
 
 import { scaleLinear as d3ScaleLinear } from 'd3-scale';
 

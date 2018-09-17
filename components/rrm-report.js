@@ -12,6 +12,7 @@ export default class extends React.Component {
 
         this.state = {
             bLineGraphMode: false,
+            fLinePathToColor: linePath => this.state.sThemeColorOffGrey, // TODO: maybe we can do a better function?
             fValueToColor: iValue => {
                 const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
                 return oMatch && oMatch.color; // if !oMatch, d3 is expected to render black by default
@@ -64,7 +65,8 @@ export default class extends React.Component {
             return {
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
                 data: _oGraphData.arroGraphData,
-                fValueToColor: this.state.fValueToColor, // TODO: maybe not needed
+                fLinePathToColor: this.state.fLinePathToColor, // TODO: maybe pass indirectly
+                fValueToColor: this.state.fValueToColor, // TODO: maybe pass indirectly
                 height: parseInt(this.props.siThemeChartHeight),
                 iAxisInterval: parseInt(this.props.siThemeChartAxisInterval),
                 iMaxX: parseFloat(_oReportData.iMaxX),
