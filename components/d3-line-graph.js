@@ -75,8 +75,6 @@ export default class extends React.Component {
                     width={this.props.width}
                 >
                     <g className="line">
-                        {/*<path d={this.fLinePath(this.props.data)} />*/}
-                        {/*<path d={this.fd3Line.x(this.selectScaledX).y(this.selectScaledY)} />*/}
                         <path d={this.fd3Line.x(this.selectScaledX).y(this.selectScaledY)(this.props.data)} />
                     </g>
 

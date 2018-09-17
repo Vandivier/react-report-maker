@@ -27,6 +27,7 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
     // A better way to copy the uploaded file.
     fs.readFile(sTempPath, 'utf8', (error, sData) => {
         const arrarrsCellsByRow = sData.split(EOL).map(sRow => sRow.split(/\t/g));
+        const bMetaWithinSpreadsheet = arrarrsCellsByRow[0][0].toLowerCase() === 'metdata';
         const oResponse = {};
 
         if (error) {
@@ -36,27 +37,34 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
         // transpose
         // ref: https://stackoverflow.com/a/17428705/3931488
         oResponse.arrarrsColumns = arrarrsCellsByRow.map((sCell, i, _arr) => _arr.map(row => row[i]));
-        oResponse.arrarroColumns = oResponse.arrarrsColumns.slice(1, oResponse.arrarrsColumns.length).map(arrsColumnCells => {
-            let arroGraphData = [];
-            let i = 10;
-            const sGraphTitle = arrsColumnCells[0];
+        oResponse.arrarroColumns = (bMetaWithinSpreadsheet
+            ? oResponse.arrarrsColumns.slice(1, oResponse.arrarrsColumns.length)
+            : oResponse.arrarrsColumns
+        )
+            .map(arrsColumnCells => {
+                let arroGraphData = [];
+                let i = 10;
+                const sGraphTitle = arrsColumnCells[0];
 
-            while (i + 1) {
-                arroGraphData.push({
-                    count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
-                    value: i,
-                });
+                if (!sGraphTitle) return;
 
-                i--;
-            }
+                while (i + 1) {
+                    arroGraphData.push({
+                        count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
+                        value: i,
+                    });
 
-            return {
-                arroGraphData,
-                sGraphTitle,
-            };
-        });
+                    i--;
+                }
 
-        oResponse.arrsMetadata = oResponse.arrarrsColumns[0];
+                return {
+                    arroGraphData,
+                    sGraphTitle,
+                };
+            })
+            .filter(oColumn => oColumn); // remove records not associated to a column
+
+        oResponse.arrsMetadata = bMetaWithinSpreadsheet ? oResponse.arrarrsColumns[0] : [];
 
         fs.writeFile(sWritePath, sData, 'utf8', error => {
             if (error) {
