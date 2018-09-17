@@ -27,7 +27,6 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
     // A better way to copy the uploaded file.
     fs.readFile(sTempPath, 'utf8', (error, sData) => {
         const arrarrsCellsByRow = sData.split(EOL).map(sRow => sRow.split(/\t/g));
-        const bMetaWithinSpreadsheet = arrarrsCellsByRow[0][0].toLowerCase() === 'metdata';
         const oResponse = {};
 
         if (error) {
@@ -37,7 +36,9 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
         // transpose
         // ref: https://stackoverflow.com/a/17428705/3931488
         oResponse.arrarrsColumns = arrarrsCellsByRow.map((sCell, i, _arr) => _arr.map(row => row[i]));
-        oResponse.arrarroColumns = (bMetaWithinSpreadsheet
+        oResponse.bMetaWithinSpreadsheet = oResponse.arrarrsColumns[0][0].toLowerCase() === 'metadata';
+
+        oResponse.arrarroColumns = (oResponse.bMetaWithinSpreadsheet
             ? oResponse.arrarrsColumns.slice(1, oResponse.arrarrsColumns.length)
             : oResponse.arrarrsColumns
         )
@@ -64,7 +65,7 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
             })
             .filter(oColumn => oColumn); // remove records not associated to a column
 
-        oResponse.arrsMetadata = bMetaWithinSpreadsheet ? oResponse.arrarrsColumns[0] : [];
+        oResponse.arrsMetadata = oResponse.bMetaWithinSpreadsheet ? oResponse.arrarrsColumns[0] : [];
 
         fs.writeFile(sWritePath, sData, 'utf8', error => {
             if (error) {
