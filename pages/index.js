@@ -14,9 +14,10 @@ export default class extends Page {
         this.state = {
             instance: this,
             files: [],
-            iPanelMaxX: 10.5, // default bc it's just sort of like a standard survey value
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
+            sPanelLabel: 'Time',
+            iPanelMaxX: 10.5, // default bc it's just sort of like a standard survey value
             sThemeColorOffWhite: 'lightcyan',
             sThemeColorOffGrey: 'silver',
             sThemeColorPrimary: '#97dcdc',

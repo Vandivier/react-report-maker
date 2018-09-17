@@ -115,76 +115,125 @@ export default class extends React.Component {
 
                         {this.props.arroReportDatas &&
                             this.props.arroReportDatas.length && (
-                                <Container>
-                                    <Row style={{ alignItems: 'baseline' }}>
-                                        <Col xs="12" sm="3" className="pt-5">
-                                            <span>Panel Report Title</span>
-                                        </Col>
-                                        <Col>
-                                            <input
-                                                name="sPanelTitle"
-                                                onChange={e => this.props.fHandleChange(e)}
-                                                type="text"
-                                                value={this.props.sPanelTitle}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row style={{ alignItems: 'baseline' }}>
-                                        {/* //iMaxX: 10 + 0.5,
+                                <Fragment>
+                                    <Container
+                                        style={{
+                                            border: '1px solid silver',
+                                            borderRadius: '.5em',
+                                            padding: '1em',
+                                        }}
+                                    >
+                                        <Row style={{ alignItems: 'baseline' }}>
+                                            <Col xs="12" sm="3">
+                                                <span>(Optional) Line Graph X Variable Column Number (0-index)</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sPanelColumn"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sPanelColumn}
+                                                />
+                                            </Col>
+                                            {this.props.sPanelColumn && (
+                                                <Fragment>
+                                                    <Col xs="12" sm="3">
+                                                        <span>Line Graph X Variable Label Number</span>
+                                                    </Col>
+                                                    <Col>
+                                                        <input
+                                                            name="sPanelColumnLabel"
+                                                            onChange={e => this.props.fHandleChange(e)}
+                                                            type="text"
+                                                            value={this.props.sPanelColumnLabel}
+                                                        />
+                                                    </Col>
+                                                    <Col xs="12" sm="3">
+                                                        <span>Line Graph X Axis Label</span>
+                                                    </Col>
+                                                    <Col>
+                                                        <input
+                                                            name="sPanelLabel"
+                                                            onChange={e => this.props.fHandleChange(e)}
+                                                            type="text"
+                                                            value={this.props.sPanelLabel}
+                                                        />
+                                                    </Col>
+                                                </Fragment>
+                                            )}
+                                        </Row>
+                                        <Row style={{ alignItems: 'baseline' }}>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <span>Panel Report Title</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sPanelTitle"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sPanelTitle}
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row style={{ alignItems: 'baseline' }}>
+                                            {/* //iMaxX: 10 + 0.5,
                                             // TODO: make Maximum X-AXis Value a spreadsheet meta val, but still add the .5 so we don't clip bar
                                         */}
-                                        <Col xs="12" sm="3" className="pt-5">
-                                            <span>
-                                                Panel Maximum X-Axis Value (Consider adding .5 to show bar width evenly on last value)
-                                            </span>
-                                        </Col>
-                                        <Col>
-                                            <input
-                                                name="iPanelMaxX"
-                                                onChange={e => this.props.fHandleChange(e)}
-                                                type="text"
-                                                value={this.props.iPanelMaxX}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs="12" sm="3" className="pt-5">
-                                            <span>Report Title</span>
-                                        </Col>
-                                        <Col xs="12" sm="3" className="pt-5">
-                                            <span>Report X-Axis Label</span>
-                                        </Col>
-                                        {/*
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <span>
+                                                    Panel Maximum X-Axis Value (Consider adding .5 to show bar width evenly on last value)
+                                                </span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="iPanelMaxX"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.iPanelMaxX}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </Container>
+
+                                    <Container>
+                                        <Row>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <span>Report Title</span>
+                                            </Col>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <span>Report X-Axis Label</span>
+                                            </Col>
+                                            {/*
                                         <Col xs="12" sm="3" className="pt-5">
                                             <span>Maximum X-Axis Value (Consider adding .5 to show bar width evenly on last value)</span>
                                         </Col>
                                         */}
-                                        <Col xs="12" sm="3" className="pt-5">
-                                            <span>Maximum Y-Axis Value (eg, Expected Response Count)</span>
-                                        </Col>
-                                        <Col xs="12" sm="3" className="pt-5">
-                                            <span>Report Order Number (0 is Current Period)</span>
-                                        </Col>
-                                    </Row>
-                                    {this.props.arroReportDatas.map((oReportData, i) => (
-                                        <Row className="pb-5" key={'report-data-fragment-' + i}>
                                             <Col xs="12" sm="3" className="pt-5">
-                                                <input
-                                                    name="sReportTitle"
-                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
-                                                    type="text"
-                                                    value={oReportData.sReportTitle}
-                                                />
+                                                <span>Maximum Y-Axis Value (eg, Expected Response Count)</span>
                                             </Col>
                                             <Col xs="12" sm="3" className="pt-5">
-                                                <input
-                                                    name="sLabel"
-                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
-                                                    type="text"
-                                                    value={oReportData.sLabel}
-                                                />
+                                                <span>Report Order Number (0 is Current Period)</span>
                                             </Col>
-                                            {/*
+                                        </Row>
+                                        {this.props.arroReportDatas.map((oReportData, i) => (
+                                            <Row className="pb-5" key={'report-data-fragment-' + i}>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        name="sReportTitle"
+                                                        onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                        type="text"
+                                                        value={oReportData.sReportTitle}
+                                                    />
+                                                </Col>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        name="sLabel"
+                                                        onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                        type="text"
+                                                        value={oReportData.sLabel}
+                                                    />
+                                                </Col>
+                                                {/*
                                             <Col xs="12" sm="3" className="pt-5">
                                                 <input
                                                     name="iMaxX"
@@ -194,25 +243,26 @@ export default class extends React.Component {
                                                 />
                                             </Col>
                                             */}
-                                            <Col xs="12" sm="3" className="pt-5">
-                                                <input
-                                                    name="iMaxY"
-                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
-                                                    type="text"
-                                                    value={oReportData.iMaxY}
-                                                />
-                                            </Col>
-                                            <Col xs="12" sm="3" className="pt-5">
-                                                <input
-                                                    name="iPriority"
-                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
-                                                    type="text"
-                                                    value={oReportData.iPriority}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    ))}
-                                </Container>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        name="iMaxY"
+                                                        onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                        type="text"
+                                                        value={oReportData.iMaxY}
+                                                    />
+                                                </Col>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        name="iPriority"
+                                                        onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                        type="text"
+                                                        value={oReportData.iPriority}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        ))}
+                                    </Container>
+                                </Fragment>
                             )}
 
                         <Row className="col-12">
