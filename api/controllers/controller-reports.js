@@ -71,6 +71,8 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
             if (error) {
                 res.render('error', error);
             }
+
+            res.json(oResponse);
         });
     });
 });
