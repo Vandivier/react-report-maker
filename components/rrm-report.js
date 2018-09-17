@@ -30,6 +30,7 @@ export default class extends React.Component {
 
         this.fHandleLineGraphClick = this.fToggleLineGraphView.bind(this);
         this.foBarGraphProps = this.foBarGraphProps.bind(this);
+        this.foLineGraphData = this.foLineGraphData.bind(this);
     }
 
     // TODO: today we take the first report's questions/columns (this.state.arroColumns)
@@ -38,7 +39,7 @@ export default class extends React.Component {
     fParsePanelColumns() {
         this.state.arroPanelColumns = [];
 
-        this.props.arroReportDatas.forEach((oReportData, iReport) => {
+        this.props.arroReportDatas.forEach(oReportData => {
             oReportData.arrarroColumns.map((oGraphData, iColumn) => {
                 this.state.arroPanelColumns[iColumn] = this.state.arroPanelColumns[iColumn] || [];
                 this.state.arroPanelColumns[iColumn].push(this.foBarGraphProps(oReportData, oGraphData));
@@ -73,10 +74,10 @@ export default class extends React.Component {
                 iResponseCount,
                 iResponseValue,
                 margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
+                oAssociatedReport: _oReportData,
                 sColorGridlines: this.props.sThemeColorOffWhite,
                 sColorLabels: this.props.sThemeColorPrimary,
-                selectX: datum => datum.value,
-                selectY: datum => datum.count,
+                sGraphTitle: _oGraphData.sGraphTitle,
                 sXAxisLabel: this.props.sDataXAxisLabel,
                 sYAxisLabel: this.props.sDataYAxisLabel,
                 width: parseInt(this.props.siThemeChartWidth),
@@ -93,6 +94,19 @@ export default class extends React.Component {
                 width: 1000,
             };
         }
+    }
+
+    foLineGraphData(oMassagedData, arroColumnDataByReport) {
+        return Object.assign({}, oMassagedData, {
+            data: arroColumnDataByReport.map(_oColumnWithinReport => {
+                return Object.assign({}, _oColumnWithinReport, {
+                    x: _oColumnWithinReport.oAssociatedReport.iPriority,
+                    y: _oColumnWithinReport.iResponseAverage,
+                    info: _oColumnWithinReport,
+                });
+            }),
+            iMaxX: arroColumnDataByReport.length - 1,
+        });
     }
 
     // indirectly cause rerender using setState
@@ -247,7 +261,10 @@ export default class extends React.Component {
                                     <D3BarGraph {...oMassagedData} key={'bar-graph-' + iColumn} />
                                 </div>
                                 <div style={{ display: !this.state.bLineGraphMode ? 'none' : 'initial' }}>
-                                    <D3LineGraph {...oMassagedData} {...arroColumnDataByReport} key={'line-graph-' + iColumn} />
+                                    <D3LineGraph
+                                        {...this.foLineGraphData(oMassagedData, arroColumnDataByReport)}
+                                        key={'line-graph-' + iColumn}
+                                    />
                                 </div>
                                 <style jsx>
                                     {`

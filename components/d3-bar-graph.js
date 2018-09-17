@@ -9,21 +9,8 @@ import { Element } from 'react-faux-dom';
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis';
 import { scaleLinear as d3ScaleLinear } from 'd3-scale';
 import { select as d3Select } from 'd3-selection';
-import { line as d3Line } from 'd3-shape';
 
 import SVGWithMargin from './d3-svg-with-margin/d3-svg-with-margin';
-//import './index.css';
-
-/*
-type Props = {
-    data: any,
-    height: number,
-    margin: Object | number,
-    selectX: (datum: any) => any,
-    selectY: (datum: any) => any,
-    width: number,
-};
-*/
 
 export default ({
     barWidth,
@@ -36,8 +23,6 @@ export default ({
     margin,
     sColorGridlines,
     sColorLabels,
-    selectX,
-    selectY,
     sXAxisLabel,
     sYAxisLabel,
     width,
@@ -146,7 +131,7 @@ export default ({
                             key={'bar-' + i}
                             x={xScale(datum.value) - barWidth / 2}
                             y={yScale(datum.count)}
-                            height={height - yScale(selectY(datum))}
+                            height={height - yScale(datum.count)}
                             width={barWidth}
                             fill={fValueToColor(datum.value)}
                         />

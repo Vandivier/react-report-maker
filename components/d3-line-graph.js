@@ -9,25 +9,13 @@ import { select as d3Select } from 'd3-selection';
 import { line as d3Line } from 'd3-shape';
 
 import SVGWithMargin from './d3-svg-with-margin/d3-svg-with-margin';
-//import './index.css';
 
-/*
-type Props = {
-    data: any,
-    height: number,
-    margin: Object | number,
-    selectX: (datum: any) => any,
-    selectY: (datum: any) => any,
-    width: number,
-};
-*/
-
-export default ({ data, height, margin, selectX, selectY, width }) => {
+export default ({ data, height, iMaxX, iMaxY, margin, width }) => {
     const xScale = d3ScaleLinear()
-        .domain([0, 10])
+        .domain([0, iMaxX])
         .range([0, width]);
     const yScale = d3ScaleLinear()
-        .domain([0, 10])
+        .domain([0, iMaxY])
         .range([height, 0]);
 
     const xAxis = d3AxisBottom()
@@ -37,18 +25,20 @@ export default ({ data, height, margin, selectX, selectY, width }) => {
         .scale(yScale)
         .ticks(data.length);
 
-    const selectScaledX = datum => xScale(selectX(datum));
-    const selectScaledY = datum => yScale(selectY(datum));
+    const selectScaledX = datum => xScale(datum.x);
+    const selectScaledY = datum => yScale(datum.y);
 
     const sparkLine = d3Line()
         .x(selectScaledX)
         .y(selectScaledY);
 
     const linePath = sparkLine(data);
-    const circlePoints = data.map(datum => ({
-        x: selectScaledX(datum),
-        y: selectScaledY(datum),
-    }));
+    const circlePoints = data.map(datum => {
+        return {
+            x: selectScaledX(datum),
+            y: selectScaledY(datum),
+        };
+    });
 
     return (
         <Fragment>
