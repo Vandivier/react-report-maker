@@ -162,7 +162,7 @@ export default class extends React.Component {
                         boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
                     }}
                 >
-                    <Container className="mt-2 mb-4">
+                    <Container>
                         <Row>
                             <h1 className="display-2" style={{ color: this.props.sThemeColorPrimary, fontSize: 32, fontWeight: 'bold' }}>
                                 {this.props.sPanelTitle}
@@ -203,22 +203,32 @@ export default class extends React.Component {
 
                         return (
                             <Container key={'graph-container-' + iColumn}>
-                                <h3
-                                    className="graph-title"
-                                    key={'graph-title-' + iColumn}
-                                    style={{
-                                        color: this.props.sThemeColorOffWhite,
-                                        fontSize: 18,
-                                    }}
-                                >
-                                    {oMassagedData.sGraphTitle}
-                                </h3>
-                                <p className="graph-info" key={'graph-response-average-' + iColumn} title={oMassagedData.iResponseAverage}>
-                                    Average Response: {oMassagedData.iResponseAverage.toFixed(2)}
-                                </p>
-                                <p className="graph-info" key={'graph-response-count-' + iColumn}>
-                                    Response Count: {oMassagedData.iResponseCount} / {oMassagedData.iMaxY}
-                                </p>
+                                <Row>
+                                    <h3
+                                        className="graph-title"
+                                        key={'graph-title-' + iColumn}
+                                        style={{
+                                            color: this.props.sThemeColorOffWhite,
+                                            fontSize: 18,
+                                        }}
+                                    >
+                                        {oMassagedData.sGraphTitle}
+                                    </h3>
+                                </Row>
+                                <Row>
+                                    <p
+                                        className="graph-info"
+                                        key={'graph-response-average-' + iColumn}
+                                        title={oMassagedData.iResponseAverage}
+                                    >
+                                        Average Response: {oMassagedData.iResponseAverage.toFixed(2)}
+                                    </p>
+                                </Row>
+                                <Row>
+                                    <p className="graph-info" key={'graph-response-count-' + iColumn}>
+                                        Response Count: {oMassagedData.iResponseCount} / {oMassagedData.iMaxY}
+                                    </p>
+                                </Row>
 
                                 {/* render even if it isn't shown, so it will be available after download */}
                                 <div style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}>
