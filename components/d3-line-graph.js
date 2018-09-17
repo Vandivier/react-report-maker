@@ -36,46 +36,12 @@ export default class extends React.Component {
                 y: this.selectScaledY(datum),
             };
         });
-
-        //this.fLinePath = this.fLinePath.bind(this);
-        //this.fd3LineTest = this.fd3LineTest.bind(this);
-        //this.fd3LineTest();
     }
 
     // ref: https://bl.ocks.org/kdubbels/c445744cd3ffa18a5bb17ac8ad70017e
     // ref: https://github.com/d3/d3-shape
-    /*
-    fLinePath = _data =>
-        d3Line
-            .x(selectScaledX)
-            .y(selectScaledY);
-            */
-    //.bind(_data);
-
-    /*
-    
-    const sparkLine = d3Line()
-        .x(selectScaledX)
-        .y(selectScaledY);
-    */
-
-    fd3Line = d3Line();
-    //.x(selectScaledX)
-    //.y(selectScaledY);
-
     // wtf idk
-    fd3LineIndirect = function() {
-        return this.fd3Line.x(this.selectScaledX).y(this.selectScaledY)(this.props.data);
-    };
-
-    /*
-    fd3LineTest = function() {
-        console.log(this.props.data);
-        console.log(this.fd3Line.x(this.selectScaledX).y(this.selectScaledY));
-        console.log(this.fd3Line.x(this.selectScaledX).y(this.selectScaledY)(this.props.data));
-        return '';
-    };
-    */
+    fd3Line = d3Line();
 
     render() {
         return (
