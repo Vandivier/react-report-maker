@@ -10,15 +10,10 @@ export default class extends React.Component {
         super(props);
 
         this.state = {
-            arrarroGraphDatas: props.oReportData.arrarroGraphDatas,
             bLineGraphMode: false,
-            iMaxX: 10 + 0.5, // TODO: make it a spreadsheet meta val, but still add the .5 so we don't clip bar
-            iMaxY: props.oReportData.iMaxY,
             sInitialIconBackgroundColor: 'rgb(230,230,230)',
             sInitialIconPrimaryLineColor: 'black',
             sInitialIconSecondaryLineColor: 'black',
-            sReportDate: props.oReportData.sReportDate,
-            sReportTitle: props.oReportData.sReportTitle,
         };
 
         this.state.sIconBackgroundColor = this.props.sThemeColorOffWhite;
@@ -31,9 +26,15 @@ export default class extends React.Component {
         };
 
         this.fHandleLineGraphClick = this.fToggleLineGraphView.bind(this);
+        this.foBarGraphProps = this.foBarGraphProps.bind(this);
     }
 
-    foBarGraphProps(_oGraphData) {
+    // graphdata is like a single question on a single report
+    // report data is like a single survey
+    // arroReportDatas is like a panel of survey data
+    // TODO: this should be like 'prepare report data' not 'prepare bar graph data'
+    //          unless we want a seperate 'prepare line graph data', etc
+    foBarGraphProps(_oReportData, _oGraphData) {
         try {
             let iResponseCount = 0;
             let iResponseValue = 0;
@@ -49,8 +50,8 @@ export default class extends React.Component {
                 fValueToColor: this.fValueToColor,
                 height: parseInt(this.props.siThemeChartHeight),
                 iAxisInterval: parseInt(this.props.siThemeChartAxisInterval),
-                iMaxX: this.state.iMaxX,
-                iMaxY: this.state.iMaxY,
+                iMaxX: parseInt(_oReportData.iMaxX),
+                iMaxY: parseInt(_oReportData.iMaxY),
                 iResponseAverage: iResponseValue / iResponseCount,
                 iResponseCount,
                 iResponseValue,
@@ -64,7 +65,7 @@ export default class extends React.Component {
                 width: parseInt(this.props.siThemeChartWidth),
             };
         } catch (e) {
-            console.log('couldnt parse oGraphData. Prob a parseInt issue. Returning base chart theme config without data', e);
+            console.log('couldnt parse graph data. Returning base chart theme config without data', e);
             // TODO: maybe try base theme with custom data before returning base theme with no data
             return {
                 barWidth: 50,
@@ -163,30 +164,18 @@ export default class extends React.Component {
                     <Container className="mt-2 mb-4">
                         <Row>
                             <h1 className="display-2" style={{ color: this.props.sThemeColorPrimary, fontSize: 32, fontWeight: 'bold' }}>
-                                {this.state.sReportTitle}
+                                {this.props.sPanelTitle}
                             </h1>
                         </Row>
 
-                        <Row>
-                            <p className="lead" style={{ color: this.props.sThemeColorPrimary, fontSize: 24, marginBottom: '20px' }}>
-                                {this.state.sReportDate}
-                            </p>
-                        </Row>
-
                         <Row id="HideButtonsRow">
-                            <button className="btn btn-outline-light btn-lg" onClick={this.props.fClearFiles}>
-                                Clear Report Data
+                            <button className="btn btn-outline-light btn-lg" onClick={this.props.fReturnToSetup}>
+                                Return to Report Setup
                             </button>
 
                             <button
                                 className="btn btn-outline-light btn-lg"
-                                onClick={e =>
-                                    this.props.fHandleDownloadReportClick(
-                                        ReactDOM.findDOMNode(this),
-                                        this.state.sReportDate,
-                                        this.state.sReportTitle
-                                    )
-                                }
+                                onClick={e => this.props.fHandleDownloadReportClick(ReactDOM.findDOMNode(this))}
                                 style={{
                                     marginLeft: 20,
                                 }}
@@ -204,34 +193,43 @@ export default class extends React.Component {
                         </Row>
                     </Container>
 
-                    {this.state.arrarroGraphDatas.map((oGraphData, i) => {
-                        const oMassagedData = this.foBarGraphProps(oGraphData);
+                    {this.props.arroReportDatas.map((oReportData, iColumn) => {
+                        // TODO: prerender bar charts for all t, unless it creates perf load or extreme file size bloat
+                        const arroRelatedPanel = oReportData.arrarroGraphDatas.map(oGraphData =>
+                            this.foBarGraphProps(oReportData, oGraphData)
+                        );
+                        debugger;
+                        const oMassagedData = arroRelatedPanel[0];
 
                         return (
-                            <Container key={'graph-container-' + i}>
+                            <Container key={'graph-container-' + iColumn}>
                                 <h3
                                     className="graph-title"
-                                    key={'graph-title-' + i}
+                                    key={'graph-title-' + iColumn}
                                     style={{
                                         color: this.props.sThemeColorOffWhite,
                                         fontSize: 18,
                                     }}
                                 >
-                                    {oGraphData.sGraphTitle}
+                                    {oMassagedData.sGraphTitle}
                                 </h3>
-                                <p className="graph-info" key={'graph-response-average-' + i} title={oMassagedData.iResponseAverage}>
+                                <p className="graph-info" key={'graph-response-average-' + iColumn} title={oMassagedData.iResponseAverage}>
                                     Average Response: {oMassagedData.iResponseAverage.toFixed(2)}
                                 </p>
-                                <p className="graph-info" key={'graph-response-count-' + i}>
-                                    Response Count: {oMassagedData.iResponseCount} / {this.state.iMaxY}
+                                <p className="graph-info" key={'graph-response-count-' + iColumn}>
+                                    Response Count: {oMassagedData.iResponseCount} / {this.oMassagedData.iMaxY}
                                 </p>
-
-                                <D3BarGraph {...oMassagedData} key={'graph-' + i} />
-
-                                {/* TODO: trend line over time for given person and question
-                                    <D3LineGraph {...oMassagedData} key={'graph-' + i} />
-                                */}
-
+                                // render even if it isn't shown, so it will be available after download
+                                <D3BarGraph
+                                    {...oMassagedData}
+                                    key={'bar-graph-' + iColumn}
+                                    style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}
+                                />
+                                <D3LineGraph
+                                    {...arroRelatedPanel}
+                                    key={'line-graph-' + iColumn}
+                                    style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}
+                                />
                                 <style jsx>
                                     {`
                                         .graph-info {

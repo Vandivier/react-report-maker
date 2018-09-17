@@ -116,12 +116,51 @@ export default class extends React.Component {
                         {this.props.arroReportDatas &&
                             this.props.arroReportDatas.length && (
                                 <Container>
+                                    <Row style={{ alignItems: 'baseline' }}>
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>Panel Report Title</span>
+                                        </Col>
+                                        <Col>
+                                            <input
+                                                name="sPanelTitle"
+                                                onChange={e => this.props.fHandleChange(e)}
+                                                type="text"
+                                                value={this.props.sPanelTitle}
+                                            />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ alignItems: 'baseline' }}>
+                                        {/* //iMaxX: 10 + 0.5,
+                                            // TODO: make Maximum X-AXis Value a spreadsheet meta val, but still add the .5 so we don't clip bar
+                                        */}
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>
+                                                Panel Maximum X-Axis Value (Consider adding .5 to show bar width evenly on last value)
+                                            </span>
+                                        </Col>
+                                        <Col>
+                                            <input
+                                                name="iPanelMaxX"
+                                                onChange={e => this.props.fHandleChange(e)}
+                                                type="text"
+                                                value={this.props.iPanelMaxX}
+                                            />
+                                        </Col>
+                                    </Row>
                                     <Row>
                                         <Col xs="12" sm="3" className="pt-5">
                                             <span>Report Title</span>
                                         </Col>
                                         <Col xs="12" sm="3" className="pt-5">
                                             <span>Report X-Axis Label</span>
+                                        </Col>
+                                        {/*
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>Maximum X-Axis Value (Consider adding .5 to show bar width evenly on last value)</span>
+                                        </Col>
+                                        */}
+                                        <Col xs="12" sm="3" className="pt-5">
+                                            <span>Maximum Y-Axis Value (eg, Expected Response Count)</span>
                                         </Col>
                                         <Col xs="12" sm="3" className="pt-5">
                                             <span>Report Order Number (0 is Current Period)</span>
@@ -143,6 +182,24 @@ export default class extends React.Component {
                                                     onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
                                                     type="text"
                                                     value={oReportData.sLabel}
+                                                />
+                                            </Col>
+                                            {/*
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <input
+                                                    name="iMaxX"
+                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                    type="text"
+                                                    value={oReportData.iMaxX}
+                                                />
+                                            </Col>
+                                            */}
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <input
+                                                    name="iMaxY"
+                                                    onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                    type="text"
+                                                    value={oReportData.iMaxY}
                                                 />
                                             </Col>
                                             <Col xs="12" sm="3" className="pt-5">

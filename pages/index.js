@@ -14,13 +14,14 @@ export default class extends Page {
         this.state = {
             instance: this,
             files: [],
+            iPanelMaxX: 10, // default bc it's just sort of like a standard survey value
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
             sThemeColorOffWhite: 'lightcyan',
             sThemeColorOffGrey: 'silver',
             sThemeColorPrimary: '#97dcdc',
             sThemeColorSecondary: 'darkcyan',
-            sThemeCustomStyle: `body { font-family: Arial; }`, // TODO: interpolate theme colors
+            sThemeCustomStyle: `body { font-family: Arial; }`, // TODO: interpolatable theme colors
             siThemeChartAxisInterval: '1',
             siThemeChartBarWidth: '50',
             siThemeChartHeight: '500',
@@ -46,6 +47,7 @@ export default class extends Page {
             },
         };
 
+        this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
         this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
         this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
     }
@@ -57,6 +59,7 @@ export default class extends Page {
                     {
                         iId: i,
                         iMaxY: oReportData.arrsMetadata[6],
+                        iMaxX: oReportData.arrsMetadata[8] || this.state.iPanelMaxX,
                         iPriority: i,
                         sReportDate: oReportData.arrsMetadata[4],
                         sReportTitle: oReportData.arrsMetadata[2],
@@ -68,9 +71,10 @@ export default class extends Page {
             .sort((a, b) => a.iPriority - b.iPriority);
     }
 
-    fClearFiles = () => {
+    // Today, setup === home page. but maybe not down the road.
+    fReturnToSetup = () => {
         this.setState({
-            oReportData: null,
+            bShowReport: false,
         });
     };
 
@@ -117,6 +121,7 @@ export default class extends Page {
 
     fHandleReportDataUpload = async files => {
         const arroExistingReportData = this.state.arroReportDatas || [];
+        let arroNewReportDatas = [];
         let arroPromises = [];
         let arroResponses = [];
 
@@ -134,8 +139,11 @@ export default class extends Page {
         arroResponses = await Promise.all(arroPromises);
 
         if (arroResponses.length) {
+            arroNewReportDatas = this.farrProcessReport(arroExistingReportData.concat(arroResponses));
             this.setState({
-                arroReportDatas: this.farrProcessReport(arroExistingReportData.concat(arroResponses)),
+                arroReportDatas: arroNewReportDatas,
+                iPanelMaxX: arroNewReportDatas[0].iMaxX,
+                sPanelTitle: arroNewReportDatas[0].sReportTitle,
             });
         } else {
             // TODO: handle
@@ -171,16 +179,16 @@ export default class extends Page {
 
     fHandleViewReportButtonClick = e => {
         this.setState({
-            oReportData: this.state.arroReportDatas[0],
+            bShowReport: true,
         });
     };
 
-    fHandleDownloadReportClick = (elReport, _sReportDate, _sReportTitle) => {
+    fHandleDownloadReportClick = elReport => {
         let elHideButtonsRow;
         const elShadowDocument = document.createElement('html'); // it's a clone byval (virtual dom) so we don't mess with the rendered DOM
         const elShadowReport = document.createElement('div');
         const elShadowStyle = document.createElement('style');
-        const sFileName = (_sReportTitle + '-' + _sReportDate).toLowerCase().replace(/[^\w]/g, '-');
+        const sFileName = (this.sPanelTitle + '-' + new Date().getTime()).toLowerCase().replace(/[^\w]/g, '-');
 
         elShadowReport.innerHTML = elReport.innerHTML;
         elHideButtonsRow = elShadowReport.querySelector('#HideButtonsRow');
@@ -196,14 +204,14 @@ export default class extends Page {
         elShadowStyle.appendChild(document.createTextNode(this.state.sThemeCustomStyle));
         elShadowDocument.appendChild(elShadowStyle);
 
-        this.state.fDownload(sFileName + '.html', elShadowDocument.innerHTML);
+        this.fDownload(sFileName + '.html', elShadowDocument.innerHTML);
     };
 
     render() {
         return (
             <Layout {...this.props} navmenu={false} container={false}>
                 <style>{this.state.sThemeCustomStyle}</style>
-                {!this.state.oReportData && (
+                {!this.state.bShowReport && (
                     <DefaultHomeView
                         {...this.props}
                         {...this.state}
@@ -217,11 +225,11 @@ export default class extends Page {
                         files={this.state.files}
                     />
                 )}
-                {this.state.oReportData && (
+                {this.state.bShowReport && (
                     <RrmReport
                         {...this.props}
                         {...this.state}
-                        fClearFiles={this.fClearFiles}
+                        fReturnToSetup={this.fReturnToSetup}
                         fHandleDownloadReportClick={this.fHandleDownloadReportClick}
                     />
                 )}
