@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Container, Row, Jumbotron } from 'reactstrap';
 
 import D3BarGraph from './d3-bar-graph';
+import D3LineGraph from './d3-line-graph';
 import IconLineGraph from './icon-line-graph';
 
 export default class extends React.Component {
@@ -198,7 +199,6 @@ export default class extends React.Component {
                         const arroRelatedPanel = oReportData.arrarroGraphDatas.map(oGraphData =>
                             this.foBarGraphProps(oReportData, oGraphData)
                         );
-                        debugger;
                         const oMassagedData = arroRelatedPanel[0];
 
                         return (
@@ -217,19 +217,16 @@ export default class extends React.Component {
                                     Average Response: {oMassagedData.iResponseAverage.toFixed(2)}
                                 </p>
                                 <p className="graph-info" key={'graph-response-count-' + iColumn}>
-                                    Response Count: {oMassagedData.iResponseCount} / {this.oMassagedData.iMaxY}
+                                    Response Count: {oMassagedData.iResponseCount} / {oMassagedData.iMaxY}
                                 </p>
-                                // render even if it isn't shown, so it will be available after download
-                                <D3BarGraph
-                                    {...oMassagedData}
-                                    key={'bar-graph-' + iColumn}
-                                    style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}
-                                />
-                                <D3LineGraph
-                                    {...arroRelatedPanel}
-                                    key={'line-graph-' + iColumn}
-                                    style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}
-                                />
+
+                                {/* render even if it isn't shown, so it will be available after download */}
+                                <div style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}>
+                                    <D3BarGraph {...oMassagedData} key={'bar-graph-' + iColumn} />
+                                </div>
+                                <div style={{ display: !this.state.bLineGraphMode ? 'none' : 'initial' }}>
+                                    <D3LineGraph {...oMassagedData} {...arroRelatedPanel} key={'line-graph-' + iColumn} />
+                                </div>
                                 <style jsx>
                                     {`
                                         .graph-info {
