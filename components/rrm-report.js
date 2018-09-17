@@ -12,6 +12,10 @@ export default class extends React.Component {
 
         this.state = {
             bLineGraphMode: false,
+            fValueToColor: iValue => {
+                const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
+                return oMatch && oMatch.color; // if !oMatch, d3 is expected to render black by default
+            },
             sInitialIconBackgroundColor: 'rgb(230,230,230)',
             sInitialIconPrimaryLineColor: 'black',
             sInitialIconSecondaryLineColor: 'black',
@@ -20,11 +24,6 @@ export default class extends React.Component {
         this.state.sIconBackgroundColor = this.props.sThemeColorOffWhite;
         this.state.sIconPrimaryLineColor = this.props.sThemeColorPrimary;
         this.state.sIconSecondaryLineColor = this.props.sThemeColorSecondary;
-
-        this.fValueToColor = iValue => {
-            const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
-            return oMatch && oMatch.color; // if !oMatch, d3 is expected to render black by default
-        };
 
         this.fParsePanelColumns();
 
@@ -65,7 +64,7 @@ export default class extends React.Component {
             return {
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
                 data: _oGraphData.arroGraphData,
-                fValueToColor: this.fValueToColor,
+                fValueToColor: this.state.fValueToColor, // TODO: maybe not needed
                 height: parseInt(this.props.siThemeChartHeight),
                 iAxisInterval: parseInt(this.props.siThemeChartAxisInterval),
                 iMaxX: parseFloat(_oReportData.iMaxX),

@@ -8,9 +8,23 @@ import { scaleLinear as d3ScaleLinear } from 'd3-scale';
 import { select as d3Select } from 'd3-selection';
 import { line as d3Line } from 'd3-shape';
 
+import RRMAxisAndGridlines from './rrm-axis-and-gridlines';
 import SVGWithMargin from './d3-svg-with-margin/d3-svg-with-margin';
 
-export default ({ data, height, iMaxX, iMaxY, margin, width }) => {
+export default ({
+    fValueToColor,
+    data,
+    height,
+    iAxisInterval,
+    iMaxX,
+    iMaxY,
+    margin,
+    sColorGridlines,
+    sColorLabels,
+    sXAxisLabel,
+    sYAxisLabel,
+    width,
+}) => {
     const xScale = d3ScaleLinear()
         .domain([0, iMaxX])
         .range([0, width]);
@@ -90,6 +104,7 @@ export default ({ data, height, iMaxX, iMaxY, margin, width }) => {
                         <circle cx={circlePoint.x} cy={circlePoint.y} key={`${circlePoint.x},${circlePoint.y}`} r={4} />
                     ))}
                 </g>
+                {/*<RRMAxisAndGridlines {...this.props} {...this.state} />*/}
             </SVGWithMargin>
         </Fragment>
     );
