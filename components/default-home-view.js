@@ -51,13 +51,25 @@ export default class extends React.Component {
                         <Row className="col-12" style={{ marginBottom: 20 }}>
                             {this.props.arroReportDatas &&
                                 this.props.arroReportDatas.length && (
-                                    <button
-                                        className="btn btn-outline-light btn-lg"
-                                        onClick={e => this.setState({ bShowAdvancedOptions: !this.state.bShowAdvancedOptions })}
-                                        title="Click to edit advanced settings like theme colors."
-                                    >
-                                        View Report
-                                    </button>
+                                    <Fragment>
+                                        <button
+                                            className="btn btn-outline-light btn-lg"
+                                            onClick={this.props.fHandleViewReportButtonClick}
+                                            title="Click to view a downloadable graphic report."
+                                        >
+                                            View Report
+                                        </button>
+                                        {/* TODO: if no this.state.oReportData
+                                        <span
+                                            style={{
+                                                color: 'red',
+                                                marginLeft: 20,
+                                            }}
+                                        >
+                                            There is a problem with the data submitted.
+                                        </span>
+                                        */}
+                                    </Fragment>
                                 )}
 
                             <div className="text-left">

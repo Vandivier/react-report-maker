@@ -47,23 +47,32 @@ export default class extends Page {
         };
 
         this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
+        this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
     }
 
     farrProcessReport(arr) {
-        return arr.map((oReportData, i) =>
-            Object.assign(
-                {
-                    iId: i,
-                    iMaxY: oReportData.arrsMetadata[6],
-                    iPriority: i,
-                    sReportDate: oReportData.arrsMetadata[4],
-                    sReportTitle: oReportData.arrsMetadata[2],
-                    sLabel: oReportData.arrsMetadata[4] || oReportData.arrsMetadata[2], // TODO: file name as additional fallback?
-                },
-                oReportData
+        return arr
+            .map((oReportData, i) =>
+                Object.assign(
+                    {
+                        iId: i,
+                        iMaxY: oReportData.arrsMetadata[6],
+                        iPriority: i,
+                        sReportDate: oReportData.arrsMetadata[4],
+                        sReportTitle: oReportData.arrsMetadata[2],
+                        sLabel: oReportData.arrsMetadata[4] || oReportData.arrsMetadata[2], // TODO: file name as additional fallback?
+                    },
+                    oReportData
+                )
             )
-        );
+            .sort((a, b) => a.iPriority - b.iPriority);
     }
+
+    fClearFiles = () => {
+        this.setState({
+            oReportData: null,
+        });
+    };
 
     fHandleChange(e) {
         const target = e.target;
@@ -86,20 +95,23 @@ export default class extends Page {
         });
     }
 
+    // TODO: maybe some code dup with farrProcessReport
     fHandleReportDataChange = (e, oUpdatedReport) => {
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
         this.setState({
-            arroReportDatas: this.state.arroReportDatas.map(_oReport => {
-                if (_oReport.iId === oUpdatedReport.iId) {
-                    // TODO: could handle evaluating priority on user's behalf
-                    return Object.assign(oUpdatedReport, { [name]: value });
-                } else {
-                    return _oReport;
-                }
-            }),
+            arroReportDatas: this.state.arroReportDatas
+                .map(_oReport => {
+                    if (_oReport.iId === oUpdatedReport.iId) {
+                        // TODO: could handle evaluating priority on user's behalf
+                        return Object.assign(oUpdatedReport, { [name]: value });
+                    } else {
+                        return _oReport;
+                    }
+                })
+                .sort((a, b) => a.iPriority - b.iPriority),
         });
     };
 
@@ -130,6 +142,7 @@ export default class extends Page {
         }
     };
 
+    // TODO: rename fHandleHeadingUpload
     fHandleLogoUpload = async files => {
         const fileReader = new FileReader();
         fileReader.readAsDataURL(files[0]);
@@ -156,9 +169,9 @@ export default class extends Page {
         };
     };
 
-    fClearFiles = () => {
+    fHandleViewReportButtonClick = e => {
         this.setState({
-            oReportData: null,
+            oReportData: this.state.arroReportDatas[0],
         });
     };
 
@@ -200,6 +213,7 @@ export default class extends Page {
                         fHandleReportDataChange={this.fHandleReportDataChange}
                         fHandleReportDataUpload={this.fHandleReportDataUpload}
                         fHandleThemeJsonUpload={this.fHandleThemeJsonUpload}
+                        fHandleViewReportButtonClick={this.fHandleViewReportButtonClick}
                         files={this.state.files}
                     />
                 )}
