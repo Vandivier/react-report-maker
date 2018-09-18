@@ -60,8 +60,6 @@ export default ({
             .attr('x', 0 - height / 2)
             .attr('dy', '20')
             .style('text-anchor', 'middle')
-            .style('fill', sColorLabels)
-            .style('color', sColorLabels)
             .text(sYAxisLabel);
 
         d3.selectAll('g line').style('stroke', sColorGridlines);

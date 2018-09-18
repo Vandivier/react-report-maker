@@ -36,12 +36,15 @@ export default class extends Page {
             fDownload: this.fDownload,
         };
 
+        // TODO: can we .bind(this) when passing in component?
         this.fDownload = this.fDownload.bind(this);
         this.fHandleChange = this.fHandleChange.bind(this);
         this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
         this.fHandleFilterValueChange = this.fHandleFilterValueChange.bind(this);
         this.fHandlePanelLineGraphVariableChange = this.fHandlePanelLineGraphVariableChange.bind(this);
         this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
+        this.fHandleReportDataAndSettingsDownload = this.fHandleReportDataAndSettingsDownload.bind(this);
+        this.fHandleReportDataAndSettingsUpload = this.fHandleReportDataAndSettingsUpload.bind(this);
         this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
     }
 
@@ -201,6 +204,40 @@ export default class extends Page {
         }
     };
 
+    fHandleReportDataAndSettingsDownload = async e => {
+        this.fDownload('report-data-and-settings-' + new Date().getTime() + '.json', _fRemoveCircularReferences(this.state, true));
+
+        // for external use, see fvRemoveCircularReferences
+        // ref: https://stackoverflow.com/a/31557814/3931488
+        function _fRemoveCircularReferences(object, bStringify) {
+            var simpleObject = {};
+
+            for (var prop in object) {
+                if (!object.hasOwnProperty(prop)) {
+                    continue;
+                }
+                if (typeof object[prop] == 'object') {
+                    continue;
+                }
+                if (typeof object[prop] == 'function') {
+                    continue;
+                }
+                simpleObject[prop] = object[prop];
+            }
+
+            return bStringify ? JSON.stringify(simpleObject) : simpleObject;
+        }
+    };
+
+    fHandleReportDataAndSettingsUpload = async files => {
+        const fileReader = new FileReader();
+        fileReader.readAsText(files[0]);
+
+        fileReader.onload = event => {
+            this.setState(JSON.parse(fileReader.result));
+        };
+    };
+
     // TODO: maybe some code dup with farrProcessReport
     fHandleReportDataChange = (e, oUpdatedReport) => {
         const target = e.target;
@@ -324,6 +361,8 @@ export default class extends Page {
                         fHandleLogoUpload={this.fHandleLogoUpload}
                         fHandlePanelLineGraphVariableChange={this.fHandlePanelLineGraphVariableChange}
                         fHandleReportDataChange={this.fHandleReportDataChange}
+                        fHandleReportDataAndSettingsDownload={this.fHandleReportDataAndSettingsDownload}
+                        fHandleReportDataAndSettingsUpload={this.fHandleReportDataAndSettingsUpload}
                         fHandleReportDataUpload={this.fHandleReportDataUpload}
                         fHandleThemeJsonUpload={this.fHandleThemeJsonUpload}
                         fHandleViewReportButtonClick={this.fHandleViewReportButtonClick}

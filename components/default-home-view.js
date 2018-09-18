@@ -53,18 +53,18 @@ export default class extends React.Component {
                             <br className="v-block d-lg-none" /> Report Maker
                         </h1>
                         <p className="lead mb-5">Input data, get graphic reports</p>
-                        <Row className="col-12" style={{ marginBottom: 20 }}>
-                            {this.props.arroReportDatas &&
-                                this.props.arroReportDatas.length && (
-                                    <Fragment>
-                                        <button
-                                            className="btn btn-outline-light btn-lg"
-                                            onClick={this.props.fHandleViewReportButtonClick}
-                                            title="Click to view a downloadable graphic report."
-                                        >
-                                            View Report
-                                        </button>
-                                        {/* TODO: if no this.state.oReportData
+
+                        {this.props.arroReportDatas &&
+                            this.props.arroReportDatas.length && (
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
+                                    <button
+                                        className="btn btn-outline-light btn-lg"
+                                        onClick={this.props.fHandleViewReportButtonClick}
+                                        title="Click to view a downloadable graphic report."
+                                    >
+                                        View Report
+                                    </button>
+                                    {/* TODO: if no this.state.oReportData
                                         <span
                                             style={{
                                                 color: 'red',
@@ -74,21 +74,26 @@ export default class extends React.Component {
                                             There is a problem with the data submitted.
                                         </span>
                                         */}
-                                    </Fragment>
-                                )}
+                                    <button
+                                        className="btn btn-outline-light btn-lg"
+                                        onClick={this.props.fHandleReportDataAndSettingsDownload}
+                                        style={{
+                                            marginLeft: 20,
+                                        }}
+                                        title="Click to download report data and settings in an JSON file."
+                                    >
+                                        Download Report Settings
+                                    </button>
+                                </Row>
+                            )}
 
+                        <Row className="col-12" style={{ marginBottom: 20 }}>
                             <div className="text-left">
                                 <ReactDropzone
                                     accept=".txt"
                                     className={'btn btn-outline-light btn-lg'}
                                     multiple={true}
                                     onDrop={this.props.fHandleReportDataUpload.bind(this)}
-                                    style={
-                                        this.props.arroReportDatas &&
-                                        this.props.arroReportDatas.length && {
-                                            marginLeft: 20,
-                                        }
-                                    }
                                     title="Drag and drop or click to select a data file containing tab-separated values."
                                 >
                                     {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
@@ -102,6 +107,23 @@ export default class extends React.Component {
                                                 Upload TSV Now
                                             </Fragment>
                                         );
+                                    }}
+                                </ReactDropzone>
+
+                                <ReactDropzone
+                                    accept=".json"
+                                    className={'btn btn-outline-light btn-lg'}
+                                    multiple={false}
+                                    onDrop={this.props.fHandleReportDataAndSettingsUpload.bind(this)}
+                                    style={{ marginLeft: 20 }}
+                                    title="Drag and drop or click to select a JSON file containing both report data and settings."
+                                >
+                                    {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
+                                        if (isDragActive) {
+                                            return 'Drop here to get started!';
+                                        }
+
+                                        return <Fragment>Upload Report Settings</Fragment>;
                                     }}
                                 </ReactDropzone>
 
