@@ -61,12 +61,14 @@ export default class extends Page {
                 Object.assign(
                     {
                         iId: i,
-                        iMaxY: oReportData.arrsMetadata[6],
-                        iMaxX: oReportData.arrsMetadata[8] || this.state.iPanelMaxX,
+                        iMaxY: oReportData.arrsMetadata && oReportData.arrsMetadata[6],
+                        iMaxX: (oReportData.arrsMetadata && oReportData.arrsMetadata[8]) || this.state.iPanelMaxX,
                         iPriority: i,
-                        sReportDate: oReportData.arrsMetadata[4],
-                        sReportTitle: oReportData.arrsMetadata[2],
-                        sLabel: oReportData.arrsMetadata[4] || oReportData.arrsMetadata[2], // TODO: file name as additional fallback?
+                        sReportDate: oReportData.arrsMetadata && oReportData.arrsMetadata[4],
+                        sReportTitle: oReportData.arrsMetadata && oReportData.arrsMetadata[2],
+                        sLabel:
+                            (oReportData.arrsMetadata && oReportData.arrsMetadata[4]) ||
+                            (oReportData.arrsMetadata && oReportData.arrsMetadata[2]),
                     },
                     oReportData
                 )
@@ -108,10 +110,11 @@ export default class extends Page {
     fHandlePanelLineGraphVariableChange = async e => {
         let arroPromises = [];
         const iColumnDiscriminator = e.target.value;
+        const name = e.target.name;
         const oExistingReport = this.state.arrFiles[0];
         let arroResponses = [];
 
-        if (!oExistingReport) return Promise.resolve();
+        if (!oExistingReport || !iColumnDiscriminator) return Promise.resolve();
 
         arroPromises = [oExistingReport].map(file => {
             const formdata = new FormData();
@@ -126,39 +129,14 @@ export default class extends Page {
         arroResponses = await Promise.all(arroPromises);
 
         if (arroResponses.length) {
-            debugger;
-            arroNewReportDatas = this.farrProcessReport(arroResponses);
+            const arroNewReportDatas = this.farrProcessReport(arroResponses[0].arroReportDatas);
             this.setState({
-                arroFiles: files,
                 arroReportDatas: arroNewReportDatas,
-                //iPanelMaxX: arroNewReportDatas[0].iMaxX,
-                //sPanelTitle: arroNewReportDatas[0].sReportTitle,
-                [e.target.name]: iColumnDiscriminator,
+                [name]: iColumnDiscriminator,
             });
         } else {
             // TODO: handle
         }
-
-        /*
-        const target = e.target;
-        const iColumnDiscriminator = target.value;
-        const oLineGraphVariableMap = {};
-        const name = target.name;
-        //const arroNewReportDatas = this.farrProcessReport(oExistingReport.map(oReportData => {}));
-
-        arroExistingReportData.arrarroColumns[iColumnDiscriminator];
-        oExistingReport.forEach((oReportData, i) => {
-            const sReportDiscriminator = oReportData[iColumnDiscriminator];
-            oLineGraphVariableMap[sReportDiscriminator] = (oLineGraphVariableMap[sReportDiscriminator] || []).concat();
-        });
-
-        debugger;
-
-        this.setState({
-            arroReportDatas: this.farrProcessReport(Object.keys(oLineGraphVariableMap).map(sKey => oLineGraphVariableMap[sKey])),
-            [name]: value,
-        });
-        */
     };
 
     // TODO: maybe some code dup with farrProcessReport

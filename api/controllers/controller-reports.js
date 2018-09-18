@@ -114,38 +114,36 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
                 }
             });
 
-        debugger;
-
         oResponse.arroReportDatas = _arroReportDatas.map(oReport => {
-            oReport.bMetaWithinSpreadsheet = oResponse.arrarrsColumns[0][0].toLowerCase() === 'metadata';
-            /*
-            oReport.arrarrsColumns = (oReport.bMetaWithinSpreadsheet
-                ? oReport.arrarrsColumns.slice(1, oReport.arrarrsColumns.length)
-                : oReport.arrarrsColumns
-            )
+            oReport.bMetaWithinSpreadsheet = oResponse.bMetaWithinSpreadsheet;
+            oReport.arrarrsRows = oReport.arroMatchingRowNumbers.map(oMatchingRows => oMatchingRows.arrsRowCells);
+
+            // transpose
+            oResponse.arrarrsColumns = oReport.arrarrsRows.map((sCell, i, _arr) => _arr.map(row => row[i]));
+
+            oReport.arrarroColumns = oResponse.arrarrsColumns
                 .map(arrsColumnCells => {
                     let arroColumnCells = [];
                     let i = 10;
                     const sGraphTitle = arrsColumnCells[0];
-    
+
                     if (!sGraphTitle) return;
-    
+
                     while (i + 1) {
                         arroColumnCells.push({
                             count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
                             value: i,
                         });
-    
+
                         i--;
                     }
-    
+
                     return {
                         arroColumnCells,
                         sGraphTitle,
                     };
                 })
                 .filter(oColumn => oColumn); // remove records not associated to a column
-                */
 
             return oReport;
         });
