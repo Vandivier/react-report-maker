@@ -116,14 +116,23 @@ export default class extends React.Component {
                         {this.props.arroReportDatas &&
                             this.props.arroReportDatas.length && (
                                 <Fragment>
-                                    <Container
-                                        style={{
-                                            border: '1px solid silver',
-                                            borderRadius: '.5em',
-                                            padding: '1em',
-                                        }}
-                                    >
-                                        <Row style={{ alignItems: 'baseline' }}>
+                                    <Container>
+                                        <Row
+                                            style={{
+                                                alignItems: 'baseline',
+                                                border: '1px solid silver',
+                                                borderRadius: '.5em',
+                                                padding: '1em',
+                                            }}
+                                        >
+                                            {/* TODO: figure out why this doesn't work:
+                                                .bordered-section {
+                                                    align-items: 'baseline';
+                                                    border: '1px solid silver';
+                                                    border-radius: '.5em';
+                                                    padding: '1em';
+                                                }
+                                            */}
                                             <Col xs="12" sm="3">
                                                 <span>(Optional) Line Graph X Variable Column Number (0-index)</span>
                                             </Col>
@@ -162,8 +171,53 @@ export default class extends React.Component {
                                                 </Fragment>
                                             )}
                                         </Row>
-                                        <Row style={{ alignItems: 'baseline' }}>
-                                            <Col xs="12" sm="3" className="pt-5">
+                                        <Row
+                                            style={{
+                                                alignItems: 'baseline',
+                                                border: '1px solid silver',
+                                                borderRadius: '.5em',
+                                                marginTop: '20px',
+                                                padding: '1em',
+                                            }}
+                                        >
+                                            <Col xs="12" sm="3">
+                                                <span>Filter Column Number (Optional)</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sFilterColumn"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sFilterColumn}
+                                                />
+                                            </Col>
+                                            {this.props.sFilterColumn && (
+                                                <Fragment>
+                                                    <Col xs="12" sm="3">
+                                                        {/* TODO: make it a dropdown, not a text field */}
+                                                        <span>Filter Value</span>
+                                                    </Col>
+                                                    <Col>
+                                                        <input
+                                                            name="sFilterValue"
+                                                            onChange={e => this.props.fHandleChange(e)}
+                                                            type="text"
+                                                            value={this.props.sFilterValue}
+                                                        />
+                                                    </Col>
+                                                </Fragment>
+                                            )}
+                                        </Row>
+                                        <Row
+                                            style={{
+                                                alignItems: 'baseline',
+                                                border: '1px solid silver',
+                                                borderRadius: '.5em',
+                                                marginTop: '20px',
+                                                padding: '1em',
+                                            }}
+                                        >
+                                            <Col xs="12" sm="3">
                                                 <span>Panel Report Title</span>
                                             </Col>
                                             <Col>
@@ -175,11 +229,19 @@ export default class extends React.Component {
                                                 />
                                             </Col>
                                         </Row>
-                                        <Row style={{ alignItems: 'baseline' }}>
+                                        <Row
+                                            style={{
+                                                alignItems: 'baseline',
+                                                border: '1px solid silver',
+                                                borderRadius: '.5em',
+                                                marginTop: '20px',
+                                                padding: '1em',
+                                            }}
+                                        >
                                             {/* //iMaxX: 10 + 0.5,
                                             // TODO: make Maximum X-AXis Value a spreadsheet meta val, but still add the .5 so we don't clip bar
                                         */}
-                                            <Col xs="12" sm="3" className="pt-5">
+                                            <Col xs="12" sm="3">
                                                 <span>
                                                     Panel Maximum X-Axis Value (Consider adding .5 to show bar width evenly on last value)
                                                 </span>
@@ -424,7 +486,7 @@ export default class extends React.Component {
                                         />
                                     </Col>
                                 </Row>
-                                <Row style={{ alignItems: 'baseline' }}>
+                                <Row style={{ alignItems: 'baseline', border: '1px solid silver', borderRadius: '.5em', padding: '1em' }}>
                                     <Col xs="12" sm="3" className="pt-5">
                                         <span>Theme Custom Style (CSS)</span>
                                     </Col>
