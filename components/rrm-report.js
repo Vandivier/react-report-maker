@@ -248,6 +248,15 @@ export default class extends React.Component {
                                     <p
                                         className="graph-info"
                                         key={'graph-response-average-' + iColumn}
+                                        title={oMassagedData.iUnfilteredResponseAverage}
+                                    >
+                                        Current Period Unfiltered Average Response: {'TODO'}
+                                    </p>
+                                </Row>
+                                <Row>
+                                    <p
+                                        className="graph-info"
+                                        key={'graph-response-average-' + iColumn}
                                         title={oMassagedData.iResponseAverage}
                                     >
                                         Average Response: {oMassagedData.iResponseAverage.toFixed(2)}

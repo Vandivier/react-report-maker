@@ -33,19 +33,6 @@ export default class extends Page {
                     '0,0,0'; // default to black
                 return 'rgba(' + sRgb + ',' + sAlpha + ')';
             },
-            // ref: https://stackoverflow.com/a/18197341/3931488
-            fDownload: (filename, text) => {
-                var element = document.createElement('a');
-                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-                element.setAttribute('download', filename);
-
-                element.style.display = 'none';
-                document.body.appendChild(element);
-
-                element.click();
-
-                document.body.removeChild(element);
-            },
         };
 
         this.fDownload = this.fDownload.bind(this);
@@ -323,7 +310,7 @@ export default class extends Page {
         const elShadowDocument = document.createElement('html'); // it's a clone byval (virtual dom) so we don't mess with the rendered DOM
         const elShadowReport = document.createElement('div');
         const elShadowStyle = document.createElement('style');
-        const sFileName = (this.sPanelTitle + '-' + new Date().getTime()).toLowerCase().replace(/[^\w]/g, '-');
+        const sFileName = (this.state.sPanelTitle + '-' + new Date().getTime()).toLowerCase().replace(/[^\w]/g, '-');
 
         elShadowReport.innerHTML = elReport.innerHTML;
         elHideButtonsRow = elShadowReport.querySelector('#HideButtonsRow');
