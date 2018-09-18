@@ -139,7 +139,7 @@ export default class extends React.Component {
                                                 }
                                             */}
                                             <Col xs="12" sm="3">
-                                                <span>(Optional) Line Graph X Variable Column Number (0-index)</span>
+                                                <span>(Optional, 0-index) Line Graph X Variable Column Number</span>
                                             </Col>
                                             <Col>
                                                 <input
@@ -212,7 +212,7 @@ export default class extends React.Component {
                                             }}
                                         >
                                             <Col xs="12" sm="3">
-                                                <span>Filter Column Number (Optional)</span>
+                                                <span>(Optional, 0-index) Filter Column Number</span>
                                             </Col>
                                             <Col>
                                                 <input
@@ -257,6 +257,28 @@ export default class extends React.Component {
                                                     onChange={e => this.props.fHandleChange(e)}
                                                     type="text"
                                                     value={this.props.sPanelTitle}
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row
+                                            style={{
+                                                alignItems: 'baseline',
+                                                border: '1px solid silver',
+                                                borderRadius: '.5em',
+                                                marginTop: '20px',
+                                                padding: '1em',
+                                            }}
+                                        >
+                                            <Col xs="12" sm="3">
+                                                {/* TODO: make drop down */}
+                                                <span>(Optional, 0-index, comma-seperated) Columns to Exclude from Report</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sColumnsToExclude"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sColumnsToExclude}
                                                 />
                                             </Col>
                                         </Row>

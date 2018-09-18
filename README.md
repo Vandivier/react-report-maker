@@ -137,7 +137,7 @@ Note: There are currently no application specific tests, beyond style checking.
 
     1. I feel like I posted in the NextJS Spectrum about this...check my emails)
 
-2. Sheet-splitting: pick a column and split that out as it’s own report set; you can pick multiple in order and continually split.
+2. Sheet-splitting: you should be able to have multiple splits.
 
 3. Toggle view between the following; the buttons to toggle should have the text in the dark red Halfaker color; Ariel; size 11; bold; all views should default to this month’s results; all graphs should have text set to size 16
 
@@ -158,9 +158,12 @@ Note: There are currently no application specific tests, beyond style checking.
 6. after upload data, pick chart type by question. at least bar, line, pie
 7. color picker on relevant fields ie under advanced options https://casesandberg.github.io/react-color/
 8. create UI edit input fields under advanced options. also those should prob me made dynamically from 'themeable state' function which can be used within fHandleDownloadThemeClick
-9. TODO scraper within files, integrated priority convention and perhaps other task detail convention; LOE, etc
+9. TODO scraper within files, integrated priority convention and perhaps other task detail convention; LOE, etc. you could also maybe build an information architecture scraping ref:
 
     1. Average Response is for this graph (this subsheet, this period, this response)
     2. You might want to average across periods
     3. across subsheets (eg other people asked same question this period)
     4. or both (all people asked this question over all time)
+
+10. Support this.props.bUseGradientBackground
+11. Export Report Setup input values

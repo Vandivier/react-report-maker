@@ -63,6 +63,7 @@ export default class extends React.Component {
             });
 
             return {
+                arriColumnsToExclude: (this.props.sColumnsToExclude || '').split(','),
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
                 data: _oGraphData.arroColumnCells,
                 fLinePathToColor: this.state.fLinePathToColor, // TODO: maybe pass indirectly
@@ -235,6 +236,8 @@ export default class extends React.Component {
 
                     {this.state.arroPanelColumns.map((arroColumnDataByReport, iColumn) => {
                         const oMassagedData = arroColumnDataByReport[0];
+
+                        if (oMassagedData.arriColumnsToExclude.includes(iColumn.toString())) return null;
 
                         return (
                             <Container key={'graph-container-' + iColumn}>
