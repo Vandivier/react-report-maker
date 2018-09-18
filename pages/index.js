@@ -106,25 +106,27 @@ export default class extends Page {
     // given one report (a panelreport, or master spreadsheet, or panel-in-report), split it into arr of report
     // server will do the splitting
     fHandlePanelLineGraphVariableChange = async e => {
+        let arroPromises = [];
         const iColumnDiscriminator = e.target.value;
         const oExistingReport = this.state.arrFiles[0];
         let arroResponses = [];
 
-        if (!files[0]) return Promise.resolve();
+        if (!oExistingReport) return Promise.resolve();
 
         arroPromises = [oExistingReport].map(file => {
             const formdata = new FormData();
             formdata.append('reportInputData', file);
+            formdata.append('iColumnDiscriminator', iColumnDiscriminator);
 
             return this.mBaseService.fpPost('/reports/split-panel-by-column', {
                 oFormData: formdata,
-                iColumnDiscriminator: iColumnDiscriminator,
             });
         });
 
         arroResponses = await Promise.all(arroPromises);
 
         if (arroResponses.length) {
+            debugger;
             arroNewReportDatas = this.farrProcessReport(arroResponses);
             this.setState({
                 arroFiles: files,

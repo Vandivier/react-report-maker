@@ -84,24 +84,35 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
         const arrarroCellsByRow = sData.split(EOL).map((sRow, iRowNumber) => ({ iRowNumber, arrsRowCells: sRow.split(/\t/g) }));
         const arrTitleRow = arrarroCellsByRow[0]; // TODO: drop this report
         const oarroReportDataMap = arrarroCellsByRow.reduce((oAcc, arroCellsByRow) => {
-            const iRowDiscriminator = arroCellsByRow.arrsRowCells[req.iDiscriminator];
-            debugger;
+            const iRowDiscriminator = arroCellsByRow.arrsRowCells[req.body.iColumnDiscriminator];
             oAcc[iRowDiscriminator] = (oAcc[iRowDiscriminator] || []).concat([arroCellsByRow]);
             return oAcc;
         }, {}); // map to an array of row numbers
+
         const oResponse = { oarroReportDataMap };
 
         if (error) {
             res.render('error', error);
         }
 
-        // transpose
-        // ref: https://stackoverflow.com/a/17428705/3931488
-        oResponse.bMetaWithinSpreadsheet = oResponse.arrarrsColumns[0][0].toLowerCase() === 'metadata';
+        oResponse.bMetaWithinSpreadsheet = arrarroCellsByRow[0].arrsRowCells[0].toLowerCase() === 'metadata';
 
-        const _arroReportDatas = Object.keys(oarroReportDataMap).map(sKey => ({
-            arroMatchingRowNumbers: arrTitleRow.concat(oarroReportDataMap[sKey]),
-        }));
+        // empty report datas are invalid, and also the title row is not a valid report
+        const _arroReportDatas = Object.keys(oarroReportDataMap)
+            .map(sKey => ({
+                arroMatchingRowNumbers: [arrTitleRow].concat(oarroReportDataMap[sKey]),
+            }))
+            .filter(oReportData => {
+                const oSecondRow = oReportData.arroMatchingRowNumbers[1];
+                // empty report datas are invalid, and also the title row is not a valid report
+                if (
+                    oSecondRow &&
+                    oSecondRow.arrsRowCells.filter(sRow => sRow).length &&
+                    oSecondRow.arrsRowCells[0] !== arrTitleRow.arrsRowCells[0]
+                ) {
+                    return oReportData;
+                }
+            });
 
         debugger;
 
