@@ -31,6 +31,7 @@ export default class extends React.Component {
                     `
             .d3-bar-graph-container > .contentContainer > .contentContainerBackgroundRect {
                 fill: #fafafa;
+            }
             
             .d3-bar-graph-container > .contentContainer .line path {
                 fill: transparent;

@@ -33,6 +33,7 @@ export default class extends Page {
                     '0,0,0'; // default to black
                 return 'rgba(' + sRgb + ',' + sAlpha + ')';
             },
+            fDownload: this.fDownload,
         };
 
         this.fDownload = this.fDownload.bind(this);

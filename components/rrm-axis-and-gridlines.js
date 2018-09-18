@@ -40,7 +40,6 @@ export default ({
         svg.append('text')
             .attr('transform', 'translate(' + width / 2 + ' ,' + (height + 35) + ')')
             .style('text-anchor', 'middle')
-            .style('fill', sColorLabels)
             .text(sXAxisLabel);
 
         // add the Y gridlines
@@ -62,6 +61,7 @@ export default ({
             .attr('dy', '20')
             .style('text-anchor', 'middle')
             .style('fill', sColorLabels)
+            .style('color', sColorLabels)
             .text(sYAxisLabel);
 
         d3.selectAll('g line').style('stroke', sColorGridlines);
@@ -72,10 +72,12 @@ export default ({
             <style>
                 {`
                     .d3-bar-graph-container > .contentContainer .xAxis text {
+                        color: ${sColorLabels};
                         font-size: 12px;
                     }
             
                     .d3-bar-graph-container > .contentContainer .yAxis text {
+                        color: ${sColorLabels};
                         font-size: 12px;
                     }
                 `}

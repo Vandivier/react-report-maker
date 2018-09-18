@@ -28,16 +28,21 @@ export default class extends React.Component {
             <Fragment>
                 <Jumbotron
                     className="text-light rounded-0"
-                    style={{
-                        backgroundColor: this.props.sThemeColorOffGrey,
-                        background:
-                            'radial-gradient(ellipse at center, ' +
-                            this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 0.5) +
-                            ' 0%,' +
-                            this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 1) +
-                            ' 100%)',
-                        boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
-                    }}
+                    style={
+                        this.props.bUseGradientBackground
+                            ? {
+                                  background:
+                                      'radial-gradient(ellipse at center, ' +
+                                      this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 0) +
+                                      ' 0%,' +
+                                      this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 1) +
+                                      ' 100%)',
+                                  boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
+                              }
+                            : {
+                                  backgroundColor: this.props.sThemeColorOffGrey,
+                              }
+                    }
                 >
                     <Container className="mt-2 mb-2">
                         <h1 className="display-2 mb-3" style={{ fontWeight: 300 }}>

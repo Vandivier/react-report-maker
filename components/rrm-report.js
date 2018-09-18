@@ -22,7 +22,7 @@ export default class extends React.Component {
             sInitialIconSecondaryLineColor: 'black',
         };
 
-        this.state.sIconBackgroundColor = this.props.sThemeColorOffWhite;
+        this.state.sIconBackgroundColor = this.props.sThemeColorOffGrey;
         this.state.sIconPrimaryLineColor = this.props.sThemeColorPrimary;
         this.state.sIconSecondaryLineColor = this.props.sThemeColorSecondary;
 
@@ -76,7 +76,7 @@ export default class extends React.Component {
                 iResponseValue,
                 margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
                 oAssociatedReport: _oReportData,
-                sColorGridlines: this.props.sThemeColorOffWhite,
+                sColorGridlines: this.props.sThemeColorOffGrey,
                 sColorLabels: this.props.sThemeColorPrimary,
                 sGraphTitle: _oGraphData.sGraphTitle,
                 sXAxisLabel: _oReportData.sReportBarGraphXAxisLabel,
@@ -126,7 +126,7 @@ export default class extends React.Component {
             sIconPrimaryLineColor = this.state.sInitialIconPrimaryLineColor;
             sIconSecondaryLineColor = this.state.sInitialIconSecondaryLineColor;
         } else {
-            sIconBackgroundColor = this.props.sThemeColorOffWhite;
+            sIconBackgroundColor = this.props.sThemeColorOffGrey;
             sIconPrimaryLineColor = this.props.sThemeColorPrimary;
             sIconSecondaryLineColor = this.props.sThemeColorSecondary;
         }
@@ -148,6 +148,7 @@ export default class extends React.Component {
                     width: '100%',
                 }}
             >
+                <style>{this.props.sThemeCustomStyle}</style>
                 <div
                     className="icon-container"
                     onClick={this.fHandleLineGraphClick}
@@ -183,17 +184,22 @@ export default class extends React.Component {
                     />
                 )}
                 <Jumbotron
-                    className="text-light rounded-0"
-                    style={{
-                        backgroundColor: this.props.sThemeColorOffGrey,
-                        background:
-                            'radial-gradient(ellipse at center, ' +
-                            this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 0) +
-                            ' 0%,' +
-                            this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 1) +
-                            ' 100%)',
-                        boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
-                    }}
+                    className="rounded-0"
+                    style={
+                        this.props.bUseGradientBackground
+                            ? {
+                                  background:
+                                      'radial-gradient(ellipse at center, ' +
+                                      this.props.fsThemeColorWithAlpha('sThemeColorOffWhite', 0) +
+                                      ' 0%,' +
+                                      this.props.fsThemeColorWithAlpha('sThemeColorOffWhite', 1) +
+                                      ' 100%)',
+                                  boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
+                              }
+                            : {
+                                  backgroundColor: this.props.sThemeColorOffWhite,
+                              }
+                    }
                 >
                     <Container>
                         <Row>
@@ -219,8 +225,8 @@ export default class extends React.Component {
                             <style jsx>
                                 {`
                                     button {
-                                        border-color: ${this.props.sThemeColorOffWhite};
-                                        color: ${this.props.sThemeColorOffWhite};
+                                        border-color: ${this.props.sThemeColorOffGrey};
+                                        color: ${this.props.sThemeColorOffGrey};
                                     }
                                 `}
                             </style>
@@ -237,7 +243,7 @@ export default class extends React.Component {
                                         className="graph-title"
                                         key={'graph-title-' + iColumn}
                                         style={{
-                                            color: this.props.sThemeColorOffWhite,
+                                            color: this.props.sThemeColorOffGrey,
                                             fontSize: 18,
                                         }}
                                     >
@@ -281,7 +287,7 @@ export default class extends React.Component {
                                 <style jsx>
                                     {`
                                         .graph-info {
-                                            color: ${this.props.sThemeColorOffWhite ? this.props.sThemeColorOffWhite : 'inherit'};
+                                            color: ${this.props.sThemeColorOffGrey ? this.props.sThemeColorOffGrey : 'inherit'};
                                             font-size: 14px;
                                             margin-bottom: 0;
                                         }
