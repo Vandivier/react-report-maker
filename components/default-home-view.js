@@ -185,13 +185,13 @@ export default class extends React.Component {
                                             </Col>
                                             <Col>
                                                 <input
-                                                    name="sFilterColumn"
+                                                    name="siFilterColumnNumber"
                                                     onChange={e => this.props.fHandleChange(e)}
                                                     type="text"
-                                                    value={this.props.sFilterColumn}
+                                                    value={this.props.siFilterColumnNumber}
                                                 />
                                             </Col>
-                                            {this.props.sFilterColumn && (
+                                            {this.props.siFilterColumnNumber && (
                                                 <Fragment>
                                                     <Col xs="12" sm="3">
                                                         {/* TODO: make it a dropdown, not a text field */}
@@ -200,7 +200,7 @@ export default class extends React.Component {
                                                     <Col>
                                                         <input
                                                             name="sFilterValue"
-                                                            onChange={e => this.props.fHandleChange(e)}
+                                                            onChange={e => this.props.fHandleFilterValueChange(e)}
                                                             type="text"
                                                             value={this.props.sFilterValue}
                                                         />

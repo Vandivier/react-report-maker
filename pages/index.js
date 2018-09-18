@@ -50,6 +50,7 @@ export default class extends Page {
 
         this.fHandleChange = this.fHandleChange.bind(this);
         this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
+        this.fHandleFilterValueChange = this.fHandleFilterValueChange.bind(this);
         this.fHandlePanelLineGraphVariableChange = this.fHandlePanelLineGraphVariableChange.bind(this);
         this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
         this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
@@ -103,6 +104,85 @@ export default class extends Page {
             arroColorRanges: arroNewColorRanges,
         });
     }
+
+    fHandleFilterValueChange = e => {
+        const context = this;
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        // slice to create clone byval
+        const arroUnfilteredReportDatas = (context.state.arroUnfilteredReportDatas || context.state.arroReportDatas).slice(0);
+
+        const arroNewReportDatas = arroUnfilteredReportDatas.map(oReportData => {
+            /*
+            const oRelevantColumn = oReportData.arrarroColumns[context.state.siFilterColumnNumber];
+            const arriValidCells = oRelevantColumn.arroColumnCells.filter((oColumnCell, i) => {
+                if (oColumnCell.value.toString() === value.toString()) {
+                    return i;
+                }
+            });
+            */
+
+            // ref, from controller-reports.js
+            // TODO: generically get any column value; not just scale of 1 to 10
+            const arrNewRows = oReportData.arrarrsRows.filter(arrsRow => arrsRow[context.state.siFilterColumnNumber] === value);
+
+            // transpose and filter columns with no cells
+            const arrarrsColumns = arrNewRows
+                .map((sCell, i, _arr) => _arr.map(row => row[i]))
+                .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
+
+            const arrarroNewColumns = arrarrsColumns
+                .map(arrsColumnCells => {
+                    let arroColumnCells = [];
+                    let i = 10;
+                    const sGraphTitle = arrsColumnCells[0];
+
+                    if (!sGraphTitle) return;
+
+                    while (i + 1) {
+                        arroColumnCells.push({
+                            count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
+                            value: i,
+                        });
+
+                        i--;
+                    }
+
+                    return {
+                        arroColumnCells,
+                        sGraphTitle,
+                    };
+                })
+                .filter(oColumn => oColumn); // remove records not associated to a column
+
+            /*
+            const arrarroNewColumns = oReportData.arrarroColumns.map(arroColumns => {
+                const arroNewColumns = Object.assign({}, arroColumns, {
+                    arroColumnCells: arroColumns.arroColumnCells.filter((oColumnCell, i) => {
+                        if (arriValidCells.includes(i)) return oColumnCell;
+                    }),
+                });
+
+                return arroNewColumns;
+            });
+            */
+
+            const oNewReportData = Object.assign({}, oReportData, {
+                arrarroColumns: arrarroNewColumns,
+            });
+
+            return oNewReportData;
+        });
+
+        //debugger;
+        context.setState({
+            arroReportDatas: arroNewReportDatas,
+            arroUnfilteredReportDatas,
+            [name]: value,
+        });
+    };
 
     // if you use the LineGraphVariable option, you can only upload one master spreadsheet
     // given one report (a panelreport, or master spreadsheet, or panel-in-report), split it into arr of report
@@ -258,6 +338,7 @@ export default class extends Page {
                         {...this.state}
                         fHandleChange={this.fHandleChange}
                         fHandleColorRangeChange={this.fHandleColorRangeChange}
+                        fHandleFilterValueChange={this.fHandleFilterValueChange}
                         fHandleLogoUpload={this.fHandleLogoUpload}
                         fHandlePanelLineGraphVariableChange={this.fHandlePanelLineGraphVariableChange}
                         fHandleReportDataChange={this.fHandleReportDataChange}

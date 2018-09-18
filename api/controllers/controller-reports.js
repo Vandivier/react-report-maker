@@ -26,16 +26,19 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
 
     // A better way to copy the uploaded file.
     fs.readFile(sTempPath, 'utf8', (error, sData) => {
-        const arrarrsCellsByRow = sData.split(EOL).map(sRow => sRow.split(/\t/g));
-        const oResponse = {};
+        const oResponse = {
+            arrarrsRows: sData.split(EOL).map(sRow => sRow.split(/\t/g)),
+        };
 
         if (error) {
             res.render('error', error);
         }
 
-        // transpose
+        // transpose and filter columns with no cells
         // ref: https://stackoverflow.com/a/17428705/3931488
-        oResponse.arrarrsColumns = arrarrsCellsByRow.map((sCell, i, _arr) => _arr.map(row => row[i]));
+        oResponse.arrarrsColumns = oResponse.arrarrsRows
+            .map((sCell, i, _arr) => _arr.map(row => row[i]))
+            .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
         oResponse.bMetaWithinSpreadsheet = oResponse.arrarrsColumns[0][0].toLowerCase() === 'metadata';
 
         oResponse.arrarroColumns = (oResponse.bMetaWithinSpreadsheet
@@ -77,7 +80,6 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
     });
 });
 
-// iColumnDiscriminator
 router.post('/split-panel-by-column', upload.single('reportInputData'), (req, res) => {
     const sTempPath = req.file.path;
     fs.readFile(sTempPath, 'utf8', (error, sData) => {
@@ -118,8 +120,10 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
             oReport.bMetaWithinSpreadsheet = oResponse.bMetaWithinSpreadsheet;
             oReport.arrarrsRows = oReport.arroMatchingRowNumbers.map(oMatchingRows => oMatchingRows.arrsRowCells);
 
-            // transpose
-            oResponse.arrarrsColumns = oReport.arrarrsRows.map((sCell, i, _arr) => _arr.map(row => row[i]));
+            // transpose and filter columns with no cells
+            oResponse.arrarrsColumns = oReport.arrarrsRows
+                .map((sCell, i, _arr) => _arr.map(row => row[i]))
+                .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
 
             oReport.arrarroColumns = oResponse.arrarrsColumns
                 .map(arrsColumnCells => {
