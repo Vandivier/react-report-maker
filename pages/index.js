@@ -116,18 +116,10 @@ export default class extends Page {
         const arroUnfilteredReportDatas = (context.state.arroUnfilteredReportDatas || context.state.arroReportDatas).slice(0);
 
         const arroNewReportDatas = arroUnfilteredReportDatas.map(oReportData => {
-            /*
-            const oRelevantColumn = oReportData.arrarroColumns[context.state.siFilterColumnNumber];
-            const arriValidCells = oRelevantColumn.arroColumnCells.filter((oColumnCell, i) => {
-                if (oColumnCell.value.toString() === value.toString()) {
-                    return i;
-                }
-            });
-            */
-
             // ref, from controller-reports.js
             // TODO: generically get any column value; not just scale of 1 to 10
             const arrNewRows = oReportData.arrarrsRows.filter(arrsRow => arrsRow[context.state.siFilterColumnNumber] === value);
+            const arrsTitleRow = oReportData.arrarrsRows[0];
 
             // transpose and filter columns with no cells
             const arrarrsColumns = arrNewRows
@@ -135,10 +127,10 @@ export default class extends Page {
                 .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
 
             const arrarroNewColumns = arrarrsColumns
-                .map(arrsColumnCells => {
+                .map((arrsColumnCells, iColumn) => {
                     let arroColumnCells = [];
                     let i = 10;
-                    const sGraphTitle = arrsColumnCells[0];
+                    const sGraphTitle = arrsTitleRow[iColumn];
 
                     if (!sGraphTitle) return;
 
@@ -157,18 +149,6 @@ export default class extends Page {
                     };
                 })
                 .filter(oColumn => oColumn); // remove records not associated to a column
-
-            /*
-            const arrarroNewColumns = oReportData.arrarroColumns.map(arroColumns => {
-                const arroNewColumns = Object.assign({}, arroColumns, {
-                    arroColumnCells: arroColumns.arroColumnCells.filter((oColumnCell, i) => {
-                        if (arriValidCells.includes(i)) return oColumnCell;
-                    }),
-                });
-
-                return arroNewColumns;
-            });
-            */
 
             const oNewReportData = Object.assign({}, oReportData, {
                 arrarroColumns: arrarroNewColumns,
