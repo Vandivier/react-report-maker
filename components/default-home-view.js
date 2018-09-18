@@ -144,21 +144,47 @@ export default class extends React.Component {
                                                     value={this.props.sPanelColumn}
                                                 />
                                             </Col>
+                                            <Col xs="12" sm="3">
+                                                <span>Line Graph X Axis Label</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sDataXAxisLabel"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sDataXAxisLabel}
+                                                />
+                                            </Col>
+                                            <Col xs="12" sm="3">
+                                                <span>Line Graph Y Axis Label</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sDataYAxisLabel"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sDataYAxisLabel}
+                                                />
+                                            </Col>
+                                            {/* TODO: implement line graph x variable masking
+                                            the idea is you can input 0 and output August, etc.
+                                            but that map needs to be input somehow, prob not via same
+                                            business data spreadsheet
                                             {this.props.sPanelColumn && (
                                                 <Fragment>
                                                     <Col xs="12" sm="3">
-                                                        <span>Line Graph X Variable Label Number</span>
+                                                        <span>(Optional) Line Graph X Variable to Mask Column Number</span>
                                                     </Col>
                                                     <Col>
                                                         <input
-                                                            name="sPanelColumnLabel"
+                                                            name="sPanelColumnLabelNumber"
                                                             onChange={e => this.props.fHandleChange(e)}
                                                             type="text"
-                                                            value={this.props.sPanelColumnLabel}
+                                                            value={this.props.sPanelColumnLabelNumber}
                                                         />
                                                     </Col>
                                                     <Col xs="12" sm="3">
-                                                        <span>Line Graph X Axis Label</span>
+                                                        <span>Line Graph X Variable Mask Value Column Number</span>
                                                     </Col>
                                                     <Col>
                                                         <input
@@ -169,7 +195,7 @@ export default class extends React.Component {
                                                         />
                                                     </Col>
                                                 </Fragment>
-                                            )}
+                                            )}*/}
                                         </Row>
                                         <Row
                                             style={{
@@ -259,11 +285,16 @@ export default class extends React.Component {
 
                                     <Container>
                                         <Row>
+                                            {/* TODO: field should go next to label, not in next row,
+                                            for better extendability bc cells wrap and it's weird */}
                                             <Col xs="12" sm="3" className="pt-5">
                                                 <span>Report Title</span>
                                             </Col>
                                             <Col xs="12" sm="3" className="pt-5">
                                                 <span>Report X-Axis Label</span>
+                                            </Col>
+                                            <Col xs="12" sm="3" className="pt-5">
+                                                <span>Report Y-Axis Label</span>
                                             </Col>
                                             {/*
                                         <Col xs="12" sm="3" className="pt-5">
@@ -289,10 +320,18 @@ export default class extends React.Component {
                                                 </Col>
                                                 <Col xs="12" sm="3" className="pt-5">
                                                     <input
-                                                        name="sLabel"
+                                                        name="sReportBarGraphXAxisLabel"
                                                         onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
                                                         type="text"
-                                                        value={oReportData.sLabel}
+                                                        value={oReportData.sReportBarGraphXAxisLabel}
+                                                    />
+                                                </Col>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        name="sReportBarGraphYAxisLabel"
+                                                        onChange={e => this.props.fHandleReportDataChange(e, oReportData)}
+                                                        type="text"
+                                                        value={oReportData.sReportBarGraphYAxisLabel}
                                                     />
                                                 </Col>
                                                 {/*

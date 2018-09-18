@@ -79,8 +79,8 @@ export default class extends React.Component {
                 sColorGridlines: this.props.sThemeColorOffWhite,
                 sColorLabels: this.props.sThemeColorPrimary,
                 sGraphTitle: _oGraphData.sGraphTitle,
-                sXAxisLabel: this.props.sDataXAxisLabel,
-                sYAxisLabel: this.props.sDataYAxisLabel,
+                sXAxisLabel: _oReportData.sReportBarGraphXAxisLabel,
+                sYAxisLabel: _oReportData.sReportBarGraphYAxisLabel,
                 width: parseInt(this.props.siThemeChartWidth),
             };
         } catch (e) {
@@ -97,8 +97,8 @@ export default class extends React.Component {
         }
     }
 
-    foLineGraphData(oMassagedData, arroColumnDataByReport) {
-        return Object.assign({}, oMassagedData, {
+    foLineGraphData(oMassagedBarGraphData, arroColumnDataByReport) {
+        return Object.assign({}, oMassagedBarGraphData, {
             data: arroColumnDataByReport.map(_oColumnWithinReport => {
                 return Object.assign({}, _oColumnWithinReport, {
                     x: _oColumnWithinReport.oAssociatedReport.iPriority,
@@ -107,6 +107,8 @@ export default class extends React.Component {
                 });
             }),
             iMaxX: arroColumnDataByReport.length - 1,
+            sXAxisLabel: this.props.sDataXAxisLabel,
+            sYAxisLabel: this.props.sDataYAxisLabel,
         });
     }
 

@@ -48,6 +48,7 @@ export default class extends Page {
             },
         };
 
+        this.fDownload = this.fDownload.bind(this);
         this.fHandleChange = this.fHandleChange.bind(this);
         this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
         this.fHandleFilterValueChange = this.fHandleFilterValueChange.bind(this);
@@ -55,6 +56,19 @@ export default class extends Page {
         this.fHandleReportDataChange = this.fHandleReportDataChange.bind(this);
         this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
     }
+
+    fDownload = (filename, text) => {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    };
 
     farrProcessReport(arr) {
         return arr
