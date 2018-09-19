@@ -54,36 +54,29 @@ export default class extends React.Component {
     //          unless we want a seperate 'prepare line graph data', etc
     foBarGraphProps(_oReportData, _oGraphData) {
         try {
-            let iResponseCount = 0;
-            let iResponseValue = 0;
+            const oUnfilteredReport = this.props.arroUnfilteredReportDatas[_oReportData.iPriority];
+            const oUnfilteredColumn = oUnfilteredReport.arrarroColumns[_oGraphData.iColumnNumber];
 
-            _oGraphData.arroColumnCells.forEach(oGraphData => {
-                iResponseCount += oGraphData.count;
-                iResponseValue += oGraphData.count * oGraphData.value;
-            });
-
-            return {
+            return Object.assign({}, _oGraphData, {
                 arriColumnsToExclude: (this.props.sColumnsToExclude || '').split(','),
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
                 data: _oGraphData.arroColumnCells,
+                dataUnfiltered: oUnfilteredColumn.arroColumnCells,
                 fLinePathToColor: this.state.fLinePathToColor, // TODO: maybe pass indirectly
                 fValueToColor: this.state.fValueToColor, // TODO: maybe pass indirectly
                 height: parseInt(this.props.siThemeChartHeight),
                 iAxisInterval: parseInt(this.props.siThemeChartAxisInterval),
                 iMaxX: parseFloat(_oReportData.iMaxX),
                 iMaxY: parseFloat(_oReportData.iMaxY),
-                iResponseAverage: iResponseValue / iResponseCount,
-                iResponseCount,
-                iResponseValue,
+                iUnfilteredResponseAverage: oUnfilteredColumn.iResponseAverage,
                 margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
                 oAssociatedReport: _oReportData,
                 sColorGridlines: this.props.sThemeColorOffGrey,
                 sColorLabels: this.props.sThemeColorPrimary,
-                sGraphTitle: _oGraphData.sGraphTitle,
                 sXAxisLabel: _oReportData.sReportBarGraphXAxisLabel,
                 sYAxisLabel: _oReportData.sReportBarGraphYAxisLabel,
                 width: parseInt(this.props.siThemeChartWidth),
-            };
+            });
         } catch (e) {
             console.log('couldnt parse graph data. Returning base chart theme config without data', e);
             // TODO: maybe try base theme with custom data before returning base theme with no data
@@ -259,7 +252,8 @@ export default class extends React.Component {
                                         key={'graph-response-average-' + iColumn}
                                         title={oMassagedData.iUnfilteredResponseAverage}
                                     >
-                                        Current Period Unfiltered Average Response: {'TODO'}
+                                        Current Period Unfiltered Average Response:{' '}
+                                        {oMassagedData.iUnfilteredResponseAverage && oMassagedData.iUnfilteredResponseAverage.toFixed(2)}
                                     </p>
                                 </Row>
                                 <Row>
@@ -268,7 +262,7 @@ export default class extends React.Component {
                                         key={'graph-response-average-' + iColumn}
                                         title={oMassagedData.iResponseAverage}
                                     >
-                                        Average Response: {oMassagedData.iResponseAverage.toFixed(2)}
+                                        Average Response: {oMassagedData.iResponseAverage && oMassagedData.iResponseAverage.toFixed(2)}
                                     </p>
                                 </Row>
                                 <Row>

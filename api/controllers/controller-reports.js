@@ -45,9 +45,11 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
             ? oResponse.arrarrsColumns.slice(1, oResponse.arrarrsColumns.length)
             : oResponse.arrarrsColumns
         )
-            .map(arrsColumnCells => {
+            .map((arrsColumnCells, iColumnNumber) => {
                 let arroColumnCells = [];
                 let i = 10;
+                let iResponseCount = 0;
+                let iResponseValue = 0;
                 const sGraphTitle = arrsColumnCells[0];
 
                 if (!sGraphTitle) return;
@@ -61,12 +63,23 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
                     i--;
                 }
 
+                arroColumnCells.forEach(oGraphData => {
+                    iResponseCount += oGraphData.count;
+                    iResponseValue += oGraphData.count * oGraphData.value;
+                });
+
                 return {
                     arroColumnCells,
+                    iColumnNumber,
+                    iResponseAverage: iResponseValue / iResponseCount,
+                    iResponseCount,
+                    iResponseValue,
                     sGraphTitle,
                 };
             })
             .filter(oColumn => oColumn); // remove records not associated to a column
+
+        oResponse.arrarroColumns;
 
         oResponse.arrsMetadata = oResponse.bMetaWithinSpreadsheet ? oResponse.arrarrsColumns[0] : [];
 
@@ -126,9 +139,11 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
                 .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
 
             oReport.arrarroColumns = oResponse.arrarrsColumns
-                .map(arrsColumnCells => {
+                .map((arrsColumnCells, iColumnNumber) => {
                     let arroColumnCells = [];
                     let i = 10;
+                    let iResponseCount = 0;
+                    let iResponseValue = 0;
                     const sGraphTitle = arrsColumnCells[0];
 
                     if (!sGraphTitle) return;
@@ -142,8 +157,17 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
                         i--;
                     }
 
+                    arroColumnCells.forEach(oGraphData => {
+                        iResponseCount += oGraphData.count;
+                        iResponseValue += oGraphData.count * oGraphData.value;
+                    });
+
                     return {
                         arroColumnCells,
+                        iColumnNumber,
+                        iResponseAverage: iResponseValue / iResponseCount,
+                        iResponseCount,
+                        iResponseValue,
                         sGraphTitle,
                     };
                 })

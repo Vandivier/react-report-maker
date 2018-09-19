@@ -167,3 +167,4 @@ Note: There are currently no application specific tests, beyond style checking.
 
 10. Support this.props.bUseGradientBackground
 11. Export Report Setup input values
+12. reduce duplicate blocks within controller-report.js and index.js's filtering logic

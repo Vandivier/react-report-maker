@@ -131,10 +131,12 @@ export default class extends Page {
                 .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
 
             const arrarroNewColumns = arrarrsColumns
-                .map((arrsColumnCells, iColumn) => {
+                .map((arrsColumnCells, iColumnNumber) => {
                     let arroColumnCells = [];
                     let i = 10;
-                    const sGraphTitle = arrsTitleRow[iColumn];
+                    let iResponseCount = 0;
+                    let iResponseValue = 0;
+                    const sGraphTitle = arrsTitleRow[iColumnNumber];
 
                     if (!sGraphTitle) return;
 
@@ -147,8 +149,17 @@ export default class extends Page {
                         i--;
                     }
 
+                    arroColumnCells.forEach(oGraphData => {
+                        iResponseCount += oGraphData.count;
+                        iResponseValue += oGraphData.count * oGraphData.value;
+                    });
+
                     return {
                         arroColumnCells,
+                        iColumnNumber,
+                        iResponseAverage: iResponseValue / iResponseCount,
+                        iResponseCount,
+                        iResponseValue,
                         sGraphTitle,
                     };
                 })
@@ -161,7 +172,6 @@ export default class extends Page {
             return oNewReportData;
         });
 
-        //debugger;
         context.setState({
             arroReportDatas: arroNewReportDatas,
             arroUnfilteredReportDatas,
