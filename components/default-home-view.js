@@ -140,6 +140,111 @@ export default class extends React.Component {
                             </div>
                         </Row>
 
+                        {this.state.bShowAdvancedOptions && (
+                            <Container>
+                                {this.props.arroColorRanges && (
+                                    <Row className="pb-5">
+                                        {this.props.arroColorRanges.map((oRange, i) => {
+                                            <Fragment key={'color-range-fragment-' + i}>
+                                                <Col xs="12" sm="3" className="pt-5" key={'color-range-text-' + i}>
+                                                    <span>
+                                                        Color for Scores Between {Math.min(...oRange.values)} and{' '}
+                                                        {Math.max(...oRange.values)}
+                                                    </span>
+                                                </Col>
+                                                <Col xs="12" sm="3" className="pt-5">
+                                                    <input
+                                                        type="text"
+                                                        value={oRange.color}
+                                                        onChange={e => this.props.fHandleColorRangeChange(e, oRange, i)}
+                                                    />
+                                                </Col>
+                                            </Fragment>;
+                                        })}
+                                    </Row>
+                                )}
+                                <Row className="pb-5">
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Color Off Black</span>
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <input
+                                            name="sThemeColorOffBlack"
+                                            onChange={e => this.props.fHandleChange(e)}
+                                            type="text"
+                                            value={this.props.sThemeColorOffBlack}
+                                        />
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Color Off Grey</span>
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <input
+                                            name="sThemeColorOffGrey"
+                                            onChange={e => this.props.fHandleChange(e)}
+                                            type="text"
+                                            value={this.props.sThemeColorOffGrey}
+                                        />
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Color Off White</span>
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <input
+                                            name="sThemeColorOffWhite"
+                                            onChange={e => this.props.fHandleChange(e)}
+                                            type="text"
+                                            value={this.props.sThemeColorOffWhite}
+                                        />
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Color Primary</span>
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <input
+                                            name="sThemeColorPrimary"
+                                            onChange={e => this.props.fHandleChange(e)}
+                                            type="text"
+                                            value={this.props.sThemeColorPrimary}
+                                        />
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Color Secondary</span>
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <input
+                                            name="sThemeColorSecondary"
+                                            onChange={e => this.props.fHandleChange(e)}
+                                            type="text"
+                                            value={this.props.sThemeColorSecondary}
+                                        />
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Color Tertiary</span>
+                                    </Col>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <input
+                                            name="sThemeColorTertiary"
+                                            onChange={e => this.props.fHandleChange(e)}
+                                            type="text"
+                                            value={this.props.sThemeColorTertiary}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row style={{ alignItems: 'baseline', border: '1px solid silver', borderRadius: '.5em', padding: '1em' }}>
+                                    <Col xs="12" sm="3" className="pt-5">
+                                        <span>Theme Custom Style (CSS)</span>
+                                    </Col>
+                                    <textarea
+                                        className="col-xs-12 col-sm-9"
+                                        name="sThemeCustomStyle"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        value={this.props.sThemeCustomStyle}
+                                    />
+                                </Row>
+                            </Container>
+                        )}
+
                         {this.props.arroReportDatas &&
                             this.props.arroReportDatas.length && (
                                 <Fragment>
@@ -482,111 +587,6 @@ export default class extends React.Component {
                                 Download Theme
                             </button>
                         </Row>
-
-                        {this.state.bShowAdvancedOptions && (
-                            <Container>
-                                {this.props.arroColorRanges && (
-                                    <Row className="pb-5">
-                                        {this.props.arroColorRanges.map((oRange, i) => {
-                                            <Fragment key={'color-range-fragment-' + i}>
-                                                <Col xs="12" sm="3" className="pt-5" key={'color-range-text-' + i}>
-                                                    <span>
-                                                        Color for Scores Between {Math.min(...oRange.values)} and{' '}
-                                                        {Math.max(...oRange.values)}
-                                                    </span>
-                                                </Col>
-                                                <Col xs="12" sm="3" className="pt-5">
-                                                    <input
-                                                        type="text"
-                                                        value={oRange.color}
-                                                        onChange={e => this.props.fHandleColorRangeChange(e, oRange, i)}
-                                                    />
-                                                </Col>
-                                            </Fragment>;
-                                        })}
-                                    </Row>
-                                )}
-                                <Row className="pb-5">
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Color Off Black</span>
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <input
-                                            name="sThemeColorOffBlack"
-                                            onChange={e => this.props.fHandleChange(e)}
-                                            type="text"
-                                            value={this.props.sThemeColorOffBlack}
-                                        />
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Color Off Grey</span>
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <input
-                                            name="sThemeColorOffGrey"
-                                            onChange={e => this.props.fHandleChange(e)}
-                                            type="text"
-                                            value={this.props.sThemeColorOffGrey}
-                                        />
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Color Off White</span>
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <input
-                                            name="sThemeColorOffWhite"
-                                            onChange={e => this.props.fHandleChange(e)}
-                                            type="text"
-                                            value={this.props.sThemeColorOffWhite}
-                                        />
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Color Primary</span>
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <input
-                                            name="sThemeColorPrimary"
-                                            onChange={e => this.props.fHandleChange(e)}
-                                            type="text"
-                                            value={this.props.sThemeColorPrimary}
-                                        />
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Color Secondary</span>
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <input
-                                            name="sThemeColorSecondary"
-                                            onChange={e => this.props.fHandleChange(e)}
-                                            type="text"
-                                            value={this.props.sThemeColorSecondary}
-                                        />
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Color Tertiary</span>
-                                    </Col>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <input
-                                            name="sThemeColorTertiary"
-                                            onChange={e => this.props.fHandleChange(e)}
-                                            type="text"
-                                            value={this.props.sThemeColorTertiary}
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row style={{ alignItems: 'baseline', border: '1px solid silver', borderRadius: '.5em', padding: '1em' }}>
-                                    <Col xs="12" sm="3" className="pt-5">
-                                        <span>Theme Custom Style (CSS)</span>
-                                    </Col>
-                                    <textarea
-                                        className="col-xs-12 col-sm-9"
-                                        name="sThemeCustomStyle"
-                                        onChange={e => this.props.fHandleChange(e)}
-                                        value={this.props.sThemeCustomStyle}
-                                    />
-                                </Row>
-                            </Container>
-                        )}
                         <style jsx>{`
                             .display-2 {
                                 text-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
