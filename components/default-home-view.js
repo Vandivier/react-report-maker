@@ -160,6 +160,13 @@ export default class extends React.Component {
                                 >
                                     Label Masking
                                 </button>
+                                <button
+                                    className="btn btn-outline-light btn-lg"
+                                    onClick={e => this.setState({ bShowMiscellaneousOptions: !this.state.bShowMiscellaneousOptions })}
+                                    style={{ marginLeft: 20 }}
+                                >
+                                    Miscellaneous
+                                </button>
                             </Row>
                         )}
 
@@ -330,6 +337,21 @@ export default class extends React.Component {
                                             </Col>
                                         </Row>
                                     ))}
+                            </Fragment>
+                        )}
+
+                        {this.state.bShowMiscellaneousOptions && (
+                            <Fragment>
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
+                                    <span>(Optional, 0-index, comma-seperated) Columns to Mask</span>
+                                    <input
+                                        name="sMetaTextUnfilteredAverage"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        style={{ marginLeft: 20 }}
+                                        type="text"
+                                        value={this.props.sMetaTextUnfilteredAverage}
+                                    />
+                                </Row>
                             </Fragment>
                         )}
 

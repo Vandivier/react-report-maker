@@ -16,6 +16,7 @@ export default class extends Page {
             instance: this,
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
+            sMetaTextUnfilteredAverage: 'Current Period Unfiltered Average Response',
             sPanelLabel: 'Time',
             iPanelMaxX: 10.5, // default bc it's just sort of like a standard survey value
             sThemeColorOffWhite: 'lightcyan',

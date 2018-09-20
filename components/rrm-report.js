@@ -216,7 +216,7 @@ export default class extends React.Component {
                                         key={'graph-response-average-' + iColumn}
                                         title={oMassagedData.iUnfilteredResponseAverage}
                                     >
-                                        Current Period Unfiltered Average Response:{' '}
+                                        {this.props.sMetaTextUnfilteredAverage}:{' '}
                                         {oMassagedData.iUnfilteredResponseAverage && oMassagedData.iUnfilteredResponseAverage.toFixed(2)}
                                     </p>
                                 </Row>
