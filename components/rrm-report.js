@@ -4,7 +4,6 @@ import { Container, Row, Jumbotron } from 'reactstrap';
 
 import D3BarGraph from './d3-bar-graph';
 import D3LineGraph from './d3-line-graph';
-import IconLineGraph from './icon-line-graph';
 
 export default class extends React.Component {
     constructor(props) {
@@ -16,14 +15,7 @@ export default class extends React.Component {
                 const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
                 return oMatch && oMatch.color; // if !oMatch, d3 is expected to render black by default
             },
-            sInitialIconBackgroundColor: 'rgb(230,230,230)',
-            sInitialIconPrimaryLineColor: 'black',
-            sInitialIconSecondaryLineColor: 'black',
         };
-
-        this.state.sIconBackgroundColor = this.props.sThemeColorOffGrey;
-        this.state.sIconPrimaryLineColor = this.props.sThemeColorPrimary;
-        this.state.sIconSecondaryLineColor = this.props.sThemeColorSecondary;
 
         this.fParsePanelColumns();
 
@@ -63,7 +55,11 @@ export default class extends React.Component {
 
             return Object.assign({}, _oGraphData, {
                 arriColumnsToExclude: (this.props.sColumnsToExclude || '').split(','),
+                arriColumnsToMask: (this.props.sColumnsToMask || '').split(','),
+                arroLabelMasks: this.props.arroLabelMasks,
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
+                bHideUnmaskedValues: this.props.bHideUnmaskedValues,
+                bMaskLineGraphXAxis: this.props.bMaskLineGraphXAxis,
                 data: _oGraphData.arroColumnCells,
                 dataUnfiltered: oUnfilteredColumn && oUnfilteredColumn.arroColumnCells,
                 fLinePathToColor: this.state.fLinePathToColor, // TODO: maybe pass indirectly
@@ -110,7 +106,6 @@ export default class extends React.Component {
         });
     }
 
-    // TODO: icon colors don't matter anymore, remove references
     // indirectly cause rerender using setState
     // ref: https://stackoverflow.com/questions/42630473/react-toggle-class-onclick
     // ref: https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
@@ -208,7 +203,7 @@ export default class extends React.Component {
                                         className="graph-title"
                                         key={'graph-title-' + iColumn}
                                         style={{
-                                            color: this.props.sThemeColorOffGrey,
+                                            color: this.props.sThemeColorSecondary,
                                             fontSize: 18,
                                         }}
                                     >

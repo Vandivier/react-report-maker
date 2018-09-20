@@ -13,7 +13,23 @@ export default class extends React.Component {
         super(props);
 
         this.state = {
-            fsXFactorLabel: (d, i) => 'x test',
+            fsXFactorLabel: (d, i) => {
+                const oMaskedValue =
+                    this.props.arroLabelMasks &&
+                    d !== undefined &&
+                    this.props.arroLabelMasks.find(oLabelMask => oLabelMask.sMaskLabel === d.toString());
+                const sMaskedValue = oMaskedValue && oMaskedValue.sMaskValue;
+
+                if (!this.props.bMaskLineGraphXAxis) return d;
+
+                if (sMaskedValue) return sMaskedValue;
+
+                if (this.props.bHideUnmaskedValues) {
+                    return '';
+                }
+
+                return d;
+            },
             fsYFactorLabel: (d, i) => d,
             xScale: d3ScaleLinear()
                 .domain([0, this.props.iMaxX])
@@ -38,6 +54,9 @@ export default class extends React.Component {
                 y: this.selectScaledY(datum),
             };
         });
+
+        this.state.fsXFactorLabel = this.state.fsXFactorLabel.bind(this);
+        this.state.fsYFactorLabel = this.state.fsYFactorLabel.bind(this);
     }
 
     // ref: https://bl.ocks.org/kdubbels/c445744cd3ffa18a5bb17ac8ad70017e

@@ -274,10 +274,37 @@ export default class extends React.Component {
                                     <button className="btn btn-outline-light btn-lg" onClick={e => this.props.fCreateNewLabelMask(e)}>
                                         Create New Label Mask
                                     </button>
+                                </Row>
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
                                     <span>(Optional, 0-index, comma-seperated) Columns to Mask</span>
-                                    <input type="text" />
+                                    <input
+                                        name="sColumnsToMask"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        style={{ marginLeft: 20 }}
+                                        type="text"
+                                        value={this.props.sColumnsToMask}
+                                    />
+                                </Row>
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
                                     <span>Should Unmasked Values Be Shown?</span>
-                                    <input type="checkbox" />
+                                    {/*TODO: bHideUnmaskedValues doesn't really work. also it resets to false when view loads.*/}
+                                    <input
+                                        name="bHideUnmaskedValues"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        style={{ marginLeft: 20, marginTop: 5 }}
+                                        type="checkbox"
+                                        value={!!this.props.bHideUnmaskedValues}
+                                    />
+                                </Row>
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
+                                    <span>Should Line Graph X Axis Be Masked?</span>
+                                    <input
+                                        name="bMaskLineGraphXAxis"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        style={{ marginLeft: 20, marginTop: 5 }}
+                                        type="checkbox"
+                                        value={!!this.props.bMaskLineGraphXAxis}
+                                    />
                                 </Row>
 
                                 {this.props.arroLabelMasks &&

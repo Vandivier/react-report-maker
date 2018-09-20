@@ -21,7 +21,7 @@ export default ({
     const xAxis = d3AxisBottom()
         .scale(xScale)
         .ticks(data.length / iAxisInterval)
-        .tickFormat((d, i) => (fsXFactorLabel && fsXFactorLabel()) || d);
+        .tickFormat((d, i) => (fsXFactorLabel && fsXFactorLabel(d, i)) || d);
     const yAxis = d3AxisLeft()
         .scale(yScale)
         .ticks(data.length / iAxisInterval)
