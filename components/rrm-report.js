@@ -11,7 +11,6 @@ export default class extends React.Component {
         super(props);
 
         this.state = {
-            bLineGraphMode: false,
             fLinePathToColor: linePath => this.state.sThemeColorOffGrey, // TODO: maybe we can do a better function?
             fValueToColor: iValue => {
                 const oMatch = props.arroColorRanges && props.arroColorRanges.find(oColorRange => oColorRange.values.includes(iValue));
@@ -111,32 +110,12 @@ export default class extends React.Component {
         });
     }
 
+    // TODO: icon colors don't matter anymore, remove references
     // indirectly cause rerender using setState
     // ref: https://stackoverflow.com/questions/42630473/react-toggle-class-onclick
     // ref: https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
     fToggleLineGraphView(e) {
-        const bNewLineGraphMode = !this.state.bLineGraphMode;
-        let sIconBackgroundColor;
-        let sIconPrimaryLineColor;
-        let sIconSecondaryLineColor;
-
-        if (bNewLineGraphMode) {
-            sIconBackgroundColor = this.state.sInitialIconBackgroundColor;
-            sIconPrimaryLineColor = this.state.sInitialIconPrimaryLineColor;
-            sIconSecondaryLineColor = this.state.sInitialIconSecondaryLineColor;
-        } else {
-            sIconBackgroundColor = this.props.sThemeColorOffGrey;
-            sIconPrimaryLineColor = this.props.sThemeColorPrimary;
-            sIconSecondaryLineColor = this.props.sThemeColorSecondary;
-        }
-
-        // do the toggle
-        this.setState({
-            bLineGraphMode: bNewLineGraphMode,
-            sIconBackgroundColor,
-            sIconPrimaryLineColor,
-            sIconSecondaryLineColor,
-        });
+        document.body.classList.toggle('show-line-graphs');
     }
 
     render() {
@@ -148,31 +127,6 @@ export default class extends React.Component {
                 }}
             >
                 <style>{this.props.sThemeCustomStyle}</style>
-                <div
-                    className="icon-container"
-                    onClick={this.fHandleLineGraphClick}
-                    style={{
-                        cursor: 'pointer',
-                        position: 'fixed',
-                        right: 5,
-                        top: '20%',
-                        width: '30px',
-                    }}
-                    title={
-                        this.state.bLineGraphMode
-                            ? 'Return to bar graph view of current period data.'
-                            : 'View line graph representation of data over time.'
-                    }
-                >
-                    {/* TODO: have iconlinegraph, iconbargraph, and iconpiegraph */}
-                    <IconLineGraph
-                        {...{
-                            sIconBackgroundColor: this.state.sIconBackgroundColor,
-                            sIconPrimaryLineColor: this.state.sIconPrimaryLineColor,
-                            sIconSecondaryLineColor: this.state.sIconSecondaryLineColor,
-                        }}
-                    />
-                </div>
                 {/* TODO: inject arbitrary html, js, and css here */}
                 {this.props.imageHeaderBas64Source && (
                     <img
@@ -200,14 +154,32 @@ export default class extends React.Component {
                               }
                     }
                 >
-                    <Container>
+                    <Container style={{ marginBottom: 20 }}>
+                        <style>
+                            {`
+                                button.btn.btn-outline-light.btn-lg {
+                                    border-color: ${this.props.sThemeColorOffGrey};
+                                    color: ${this.props.sThemeColorOffGrey};
+                                }
+                            `}
+                        </style>
                         <Row>
                             <h1 className="display-2" style={{ color: this.props.sThemeColorPrimary, fontSize: 32, fontWeight: 'bold' }}>
                                 {this.props.sPanelTitle}
                             </h1>
                         </Row>
 
-                        <Row id="HideButtonsRow">
+                        <Row id="DontHideButtonsRow">
+                            <button
+                                className="btn btn-outline-light btn-lg"
+                                id="handle-line-graph-click"
+                                onClick={this.fHandleLineGraphClick}
+                            >
+                                Toggle Line/Bar Graph
+                            </button>
+                        </Row>
+
+                        <Row id="HideButtonsRow" style={{ marginTop: 20 }}>
                             <button className="btn btn-outline-light btn-lg" onClick={this.props.fReturnToSetup}>
                                 Return to Report Setup
                             </button>
@@ -221,14 +193,6 @@ export default class extends React.Component {
                             >
                                 Download Report Data
                             </button>
-                            <style jsx>
-                                {`
-                                    button {
-                                        border-color: ${this.props.sThemeColorOffGrey};
-                                        color: ${this.props.sThemeColorOffGrey};
-                                    }
-                                `}
-                            </style>
                         </Row>
                     </Container>
 
@@ -277,17 +241,30 @@ export default class extends React.Component {
                                 </Row>
 
                                 {/* render even if it isn't shown, so it will be available after download */}
-                                <div style={{ display: this.state.bLineGraphMode ? 'none' : 'initial' }}>
+                                <div className="d3-bar-graph-wrapper">
                                     <D3BarGraph {...oMassagedData} key={'bar-graph-' + iColumn} />
                                 </div>
-                                <div style={{ display: !this.state.bLineGraphMode ? 'none' : 'initial' }}>
+                                <div className="d3-line-graph-wrapper">
                                     <D3LineGraph
                                         {...this.foLineGraphData(oMassagedData, arroColumnDataByReport)}
                                         key={'line-graph-' + iColumn}
                                     />
                                 </div>
-                                <style jsx>
+                                <style>
                                     {`
+                                        body.show-line-graphs .d3-bar-graph-wrapper {
+                                            display: none;
+                                        }
+                                        body.show-line-graphs .d3-line-graph-wrapper {
+                                            display: initial;
+                                        }
+                                        body .d3-bar-graph-wrapper {
+                                            display: initial;
+                                        }
+                                        body .d3-line-graph-wrapper {
+                                            display: none;
+                                        }
+
                                         .graph-info {
                                             color: ${this.props.sThemeColorOffGrey ? this.props.sThemeColorOffGrey : 'inherit'};
                                             font-size: 14px;

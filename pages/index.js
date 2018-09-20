@@ -396,8 +396,20 @@ export default class extends Page {
         elShadowStyle.appendChild(document.createTextNode(this.state.sThemeCustomStyle));
         elShadowDocument.appendChild(elShadowStyle);
 
+        elShadowDocument.appendChild(this.felInjectOfflineReportScript());
+
         this.fDownload(sFileName + '.html', elShadowDocument.innerHTML);
     };
+
+    // inject a script tag which allows offline report toggle
+    // the injected js needs to have no line breaks or it will translate to <br>
+    // TODO: maybe grab the react function, minify, stringify, and inject that
+    felInjectOfflineReportScript(elDocument) {
+        const elScript = document.createElement('script');
+
+        elScript.innerText = `document.querySelector('#handle-line-graph-click').addEventListener("click", function() { document.body.classList.toggle('show-line-graphs'); });`;
+        return elScript;
+    }
 
     render() {
         return (
