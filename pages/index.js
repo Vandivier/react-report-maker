@@ -249,6 +249,10 @@ export default class extends Page {
                 if (!object.hasOwnProperty(prop)) {
                     continue;
                 }
+                if (Array.isArray(object[prop])) {
+                    // debateably illegal
+                    simpleObject[prop] = JSON.stringify(object[prop]);
+                }
                 if (typeof object[prop] == 'object') {
                     continue;
                 }
@@ -267,7 +271,22 @@ export default class extends Page {
         fileReader.readAsText(files[0]);
 
         fileReader.onload = event => {
-            this.setState(JSON.parse(fileReader.result));
+            const oShallowJson = JSON.parse(fileReader.result);
+            const oDeepJson = Object.keys(oShallowJson).reduce((oAcc, sKey) => {
+                if (!sKey.indexOf('arr')) {
+                    // starts with arr
+                    oAcc[sKey] = JSON.parse(oShallowJson[sKey]) || [];
+                } else {
+                    oAcc[sKey] = oShallowJson[sKey];
+                }
+
+                return oAcc;
+            }, {});
+
+            // deep json decoding allows us to get 1-layer deep nesting
+            // recursion could allow more
+            // depends on hungarian convention
+            this.setState(oDeepJson);
         };
     };
 

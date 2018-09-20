@@ -54,21 +54,26 @@ export default class extends React.Component {
     //          unless we want a seperate 'prepare line graph data', etc
     foBarGraphProps(_oReportData, _oGraphData) {
         try {
-            const oUnfilteredReport = this.props.arroUnfilteredReportDatas[_oReportData.iPriority];
-            const oUnfilteredColumn = oUnfilteredReport.arrarroColumns[_oGraphData.iColumnNumber];
+            let oUnfilteredReport;
+            let oUnfilteredColumn;
+
+            if (this.props.arroUnfilteredReportDatas) {
+                oUnfilteredReport = this.props.arroUnfilteredReportDatas[_oReportData.iPriority];
+                oUnfilteredColumn = oUnfilteredReport.arrarroColumns[_oGraphData.iColumnNumber];
+            }
 
             return Object.assign({}, _oGraphData, {
                 arriColumnsToExclude: (this.props.sColumnsToExclude || '').split(','),
                 barWidth: parseInt(this.props.siThemeChartBarWidth),
                 data: _oGraphData.arroColumnCells,
-                dataUnfiltered: oUnfilteredColumn.arroColumnCells,
+                dataUnfiltered: oUnfilteredColumn && oUnfilteredColumn.arroColumnCells,
                 fLinePathToColor: this.state.fLinePathToColor, // TODO: maybe pass indirectly
                 fValueToColor: this.state.fValueToColor, // TODO: maybe pass indirectly
                 height: parseInt(this.props.siThemeChartHeight),
                 iAxisInterval: parseInt(this.props.siThemeChartAxisInterval),
                 iMaxX: parseFloat(_oReportData.iMaxX),
                 iMaxY: parseFloat(_oReportData.iMaxY),
-                iUnfilteredResponseAverage: oUnfilteredColumn.iResponseAverage,
+                iUnfilteredResponseAverage: oUnfilteredColumn && oUnfilteredColumn.iResponseAverage,
                 margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
                 oAssociatedReport: _oReportData,
                 sColorGridlines: this.props.sThemeColorOffGrey,
