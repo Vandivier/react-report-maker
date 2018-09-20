@@ -13,6 +13,8 @@ export default class extends React.Component {
         super(props);
 
         this.state = {
+            fsXFactorLabel: (d, i) => 'x test',
+            fsYFactorLabel: (d, i) => d,
             xScale: d3ScaleLinear()
                 .domain([0, this.props.iMaxX])
                 .range([0, this.props.width]),

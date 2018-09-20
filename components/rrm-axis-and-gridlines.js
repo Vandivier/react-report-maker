@@ -12,16 +12,20 @@ export default ({
     sColorLabels,
     sXAxisLabel,
     sYAxisLabel,
+    fsXFactorLabel,
+    fsYFactorLabel,
     xScale,
     yScale,
     width,
 }) => {
     const xAxis = d3AxisBottom()
         .scale(xScale)
-        .ticks(data.length / iAxisInterval);
+        .ticks(data.length / iAxisInterval)
+        .tickFormat((d, i) => (fsXFactorLabel && fsXFactorLabel()) || d);
     const yAxis = d3AxisLeft()
         .scale(yScale)
-        .ticks(data.length / iAxisInterval);
+        .ticks(data.length / iAxisInterval)
+        .tickFormat((d, i) => (fsYFactorLabel && fsYFactorLabel()) || d);
 
     // ref: https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
     const fAppendGridLines = svg => {

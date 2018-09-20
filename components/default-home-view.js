@@ -274,7 +274,10 @@ export default class extends React.Component {
                                     <button className="btn btn-outline-light btn-lg" onClick={e => this.props.fCreateNewLabelMask(e)}>
                                         Create New Label Mask
                                     </button>
-                                    {/*TODO: csv text input, columns masked*/}
+                                    <span>(Optional, 0-index, comma-seperated) Columns to Mask</span>
+                                    <input type="text" />
+                                    <span>Should Unmasked Values Be Shown?</span>
+                                    <input type="checkbox" />
                                 </Row>
 
                                 {this.props.arroLabelMasks &&
