@@ -12,8 +12,8 @@ export default class extends Page {
         super(props);
 
         this.state = {
-            instance: this,
             files: [],
+            instance: this,
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
             sPanelLabel: 'Time',
@@ -38,6 +38,7 @@ export default class extends Page {
 
         // TODO: can we .bind(this) when passing in component?
         this.fDownload = this.fDownload.bind(this);
+        this.fHandleArrayChange = this.fHandleArrayChange.bind(this);
         this.fHandleChange = this.fHandleChange.bind(this);
         this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
         this.fHandleFilterValueChange = this.fHandleFilterValueChange.bind(this);
@@ -47,6 +48,10 @@ export default class extends Page {
         this.fHandleReportDataAndSettingsUpload = this.fHandleReportDataAndSettingsUpload.bind(this);
         this.fHandleViewReportButtonClick = this.fHandleViewReportButtonClick.bind(this);
     }
+
+    fCreateNewLabelMask = e => {
+        this.setState({ arroLabelMasks: (this.state.arroLabelMasks || []).concat([{}]) });
+    };
 
     fDownload = (filename, text) => {
         var element = document.createElement('a');
@@ -88,6 +93,24 @@ export default class extends Page {
             bShowReport: false,
         });
     };
+
+    // currently, can only handle changing one property on an object
+    // that object is within some array
+    // sArr must be on this.state
+    fHandleArrayChange(e, i, sArr) {
+        const arr = this.state[sArr];
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        const oNew = arr[i];
+
+        oNew[name] = value;
+        arr[i] = oNew;
+
+        this.setState({
+            sArr: arr,
+        });
+    }
 
     fHandleChange(e) {
         const target = e.target;
@@ -365,7 +388,9 @@ export default class extends Page {
                     <DefaultHomeView
                         {...this.props}
                         {...this.state}
+                        fCreateNewLabelMask={this.fCreateNewLabelMask.bind(this)}
                         fHandleChange={this.fHandleChange}
+                        fHandleArrayChange={this.fHandleArrayChange}
                         fHandleColorRangeChange={this.fHandleColorRangeChange}
                         fHandleFilterValueChange={this.fHandleFilterValueChange}
                         fHandleLogoUpload={this.fHandleLogoUpload}

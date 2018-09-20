@@ -141,10 +141,33 @@ export default class extends React.Component {
                         </Row>
 
                         {this.state.bShowAdvancedOptions && (
+                            <Row
+                                className="col-12"
+                                style={{
+                                    marginBottom: 20,
+                                }}
+                            >
+                                <button
+                                    className="btn btn-outline-light btn-lg"
+                                    onClick={e => this.setState({ bShowThemeOptions: !this.state.bShowThemeOptions })}
+                                >
+                                    Theme Options
+                                </button>
+                                <button
+                                    className="btn btn-outline-light btn-lg"
+                                    onClick={e => this.setState({ bShowLabelMaskingOptions: !this.state.bShowLabelMaskingOptions })}
+                                    style={{ marginLeft: 20 }}
+                                >
+                                    Label Masking
+                                </button>
+                            </Row>
+                        )}
+
+                        {this.state.bShowThemeOptions && (
                             <Container>
                                 {this.props.arroColorRanges && (
                                     <Row className="pb-5">
-                                        {this.props.arroColorRanges.map((oRange, i) => {
+                                        {this.props.arroColorRanges.map((oRange, i) => (
                                             <Fragment key={'color-range-fragment-' + i}>
                                                 <Col xs="12" sm="3" className="pt-5" key={'color-range-text-' + i}>
                                                     <span>
@@ -159,8 +182,8 @@ export default class extends React.Component {
                                                         onChange={e => this.props.fHandleColorRangeChange(e, oRange, i)}
                                                     />
                                                 </Col>
-                                            </Fragment>;
-                                        })}
+                                            </Fragment>
+                                        ))}
                                     </Row>
                                 )}
                                 <Row className="pb-5">
@@ -243,6 +266,40 @@ export default class extends React.Component {
                                     />
                                 </Row>
                             </Container>
+                        )}
+
+                        {this.state.bShowLabelMaskingOptions && (
+                            <Fragment>
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
+                                    <button className="btn btn-outline-light btn-lg" onClick={e => this.props.fCreateNewLabelMask(e)}>
+                                        Create New Label Mask
+                                    </button>
+                                </Row>
+
+                                {this.props.arroLabelMasks &&
+                                    this.props.arroLabelMasks.map((oMask, i) => (
+                                        <Row key={'label-mask-row-' + i} style={{ marginBottom: 20 }}>
+                                            <Col xs="12" sm="3" key={'label-mask-text-' + i}>
+                                                <input
+                                                    name="sMaskLabel"
+                                                    onChange={e => this.props.fHandleArrayChange(e, i, 'arroLabelMasks')}
+                                                    placeholder="Mask Label"
+                                                    type="text"
+                                                    value={oMask.sMaskLabel}
+                                                />
+                                            </Col>
+                                            <Col xs="12" sm="3">
+                                                <input
+                                                    name="sMaskValue"
+                                                    onChange={e => this.props.fHandleArrayChange(e, i, 'arroLabelMasks')}
+                                                    placeholder="Mask Value"
+                                                    type="text"
+                                                    value={oMask.sMaskValue}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    ))}
+                            </Fragment>
                         )}
 
                         {this.props.arroReportDatas &&
