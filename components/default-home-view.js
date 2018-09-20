@@ -343,13 +343,23 @@ export default class extends React.Component {
                         {this.state.bShowMiscellaneousOptions && (
                             <Fragment>
                                 <Row className="col-12" style={{ marginBottom: 20 }}>
-                                    <span>(Optional, 0-index, comma-seperated) Columns to Mask</span>
+                                    <span>Custom Label for graph meta with default: 'Current Period Unfiltered Average Response'</span>
                                     <input
                                         name="sMetaTextUnfilteredAverage"
                                         onChange={e => this.props.fHandleChange(e)}
                                         style={{ marginLeft: 20 }}
                                         type="text"
                                         value={this.props.sMetaTextUnfilteredAverage}
+                                    />
+                                </Row>
+                                <Row className="col-12" style={{ marginBottom: 20 }}>
+                                    <span>Custom Label for graph meta with default: 'My Average Response for this Question'</span>
+                                    <input
+                                        name="sMetaTextFilteredAverage"
+                                        onChange={e => this.props.fHandleChange(e)}
+                                        style={{ marginLeft: 20 }}
+                                        type="text"
+                                        value={this.props.sMetaTextFilteredAverage}
                                     />
                                 </Row>
                             </Fragment>

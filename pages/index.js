@@ -17,8 +17,10 @@ export default class extends Page {
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
             sMetaTextUnfilteredAverage: 'Current Period Unfiltered Average Response',
+            sMetaTextFilteredAverage: 'My Average Response for this Question',
             sPanelLabel: 'Time',
             iPanelMaxX: 10.5, // default bc it's just sort of like a standard survey value
+            sThemeColorGridlines: 'rgb(207,207,207)',
             sThemeColorOffWhite: 'lightcyan',
             sThemeColorOffGrey: 'silver',
             sThemeColorPrimary: '#97dcdc',

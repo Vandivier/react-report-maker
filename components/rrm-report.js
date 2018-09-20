@@ -71,7 +71,7 @@ export default class extends React.Component {
                 iUnfilteredResponseAverage: oUnfilteredColumn && oUnfilteredColumn.iResponseAverage,
                 margin: 50, // TODO: make customizable? but like how much value is there and do ppl actually care
                 oAssociatedReport: _oReportData,
-                sColorGridlines: this.props.sThemeColorOffGrey,
+                sColorGridlines: this.props.sThemeColorGridlines,
                 sColorLabels: this.props.sThemeColorPrimary,
                 sXAxisLabel: _oReportData.sReportBarGraphXAxisLabel,
                 sYAxisLabel: _oReportData.sReportBarGraphYAxisLabel,
@@ -159,7 +159,16 @@ export default class extends React.Component {
                             `}
                         </style>
                         <Row>
-                            <h1 className="display-2" style={{ color: this.props.sThemeColorPrimary, fontSize: 32, fontWeight: 'bold' }}>
+                            <h1
+                                className="display-2"
+                                style={{
+                                    color: this.props.sThemeColorPrimary,
+                                    fontSize: 32,
+                                    fontWeight: 'bold',
+                                    margin: '-30px auto 0',
+                                    textTransform: 'uppercase',
+                                }}
+                            >
                                 {this.props.sPanelTitle}
                             </h1>
                         </Row>
@@ -169,6 +178,7 @@ export default class extends React.Component {
                                 className="btn btn-outline-light btn-lg"
                                 id="handle-line-graph-click"
                                 onClick={this.fHandleLineGraphClick}
+                                style={{ margin: 'auto', marginTop: 50 }}
                             >
                                 Toggle Line/Bar Graph
                             </button>
@@ -197,7 +207,7 @@ export default class extends React.Component {
                         if (oMassagedData.arriColumnsToExclude.includes(iColumn.toString())) return null;
 
                         return (
-                            <Container key={'graph-container-' + iColumn}>
+                            <Container key={'graph-container-' + iColumn} style={{ marginTop: 70 }}>
                                 <Row>
                                     <h3
                                         className="graph-title"
@@ -205,6 +215,7 @@ export default class extends React.Component {
                                         style={{
                                             color: this.props.sThemeColorSecondary,
                                             fontSize: 18,
+                                            fontWeight: 'bold',
                                         }}
                                     >
                                         {oMassagedData.sGraphTitle}
@@ -226,7 +237,8 @@ export default class extends React.Component {
                                         key={'graph-response-average-' + iColumn}
                                         title={oMassagedData.iResponseAverage}
                                     >
-                                        Average Response: {oMassagedData.iResponseAverage && oMassagedData.iResponseAverage.toFixed(2)}
+                                        {this.props.sMetaTextFilteredAverage}:
+                                        {oMassagedData.iResponseAverage && oMassagedData.iResponseAverage.toFixed(2)}
                                     </p>
                                 </Row>
                                 <Row>
