@@ -152,10 +152,12 @@ export default class extends Page {
             const arrNewRows = oReportData.arrarrsRows.filter(arrsRow => arrsRow[context.state.siFilterColumnNumber] === value);
             const arrsTitleRow = oReportData.arrarrsRows[0];
 
-            // transpose and filter columns with no cells
-            const arrarrsColumns = arrNewRows
-                .map((sCell, i, _arr) => _arr.map(row => row[i]))
-                .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
+            // TODO: put in ella utils
+            const transpose = matrix => matrix.reduce(($, row) => row.map((_, i) => [...($[i] || []), row[i]]), []);
+
+            // rectangle transpose and filter columns with no cells
+            // ref: https://gist.github.com/femto113/1784503#gistcomment-1222341
+            const arrarrsColumns = transpose(arrNewRows).filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
 
             const arrarroNewColumns = arrarrsColumns
                 .map((arrsColumnCells, iColumnNumber) => {
@@ -167,7 +169,7 @@ export default class extends Page {
 
                     if (!sGraphTitle) return;
 
-                    while (i + 1) {
+                    while (i) {
                         arroColumnCells.push({
                             count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
                             value: i,

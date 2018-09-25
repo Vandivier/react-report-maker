@@ -16,6 +16,9 @@ const upload = multer({ dest: sOutPath });
 
 const logger = require('./../services/service-logger');
 
+// TODO: put in ella utils
+const transpose = matrix => matrix.reduce(($, row) => row.map((_, i) => [...($[i] || []), row[i]]), []);
+
 // ref: https://developer.mozilla.org/en-US/docs/Web/API/FormData/append#Example
 // ref: https://stackoverflow.com/questions/36067767/how-do-i-upload-a-file-with-the-js-fetch-api
 // ref: https://stackoverflow.com/questions/41025078/react-dropzone-how-to-upload-images
@@ -34,11 +37,9 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
             res.render('error', error);
         }
 
-        // transpose and filter columns with no cells
-        // ref: https://stackoverflow.com/a/17428705/3931488
-        oResponse.arrarrsColumns = oResponse.arrarrsRows
-            .map((sCell, i, _arr) => _arr.map(row => row[i]))
-            .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
+        // rectangle transpose and filter columns with no cells
+        // ref: https://gist.github.com/femto113/1784503#gistcomment-1222341
+        oResponse.arrarrsColumns = transpose(oResponse.arrarrsRows).filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
         oResponse.bMetaWithinSpreadsheet = oResponse.arrarrsColumns[0][0].toLowerCase() === 'metadata';
 
         oResponse.arrarroColumns = (oResponse.bMetaWithinSpreadsheet
@@ -54,9 +55,9 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
 
                 if (!sGraphTitle) return;
 
-                while (i + 1) {
+                while (i) {
                     arroColumnCells.push({
-                        count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
+                        count: arrsColumnCells.filter(sCell => sCell.toString() === i.toString()).length,
                         value: i,
                     });
 
@@ -93,6 +94,7 @@ router.post('/', upload.single('reportInputData'), (req, res) => {
     });
 });
 
+// TODO: test case Jody
 router.post('/split-panel-by-column', upload.single('reportInputData'), (req, res) => {
     const sTempPath = req.file.path;
     fs.readFile(sTempPath, 'utf8', (error, sData) => {
@@ -133,10 +135,9 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
             oReport.bMetaWithinSpreadsheet = oResponse.bMetaWithinSpreadsheet;
             oReport.arrarrsRows = oReport.arroMatchingRowNumbers.map(oMatchingRows => oMatchingRows.arrsRowCells);
 
-            // transpose and filter columns with no cells
-            oResponse.arrarrsColumns = oReport.arrarrsRows
-                .map((sCell, i, _arr) => _arr.map(row => row[i]))
-                .filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
+            // rectangle transpose and filter columns with no cells
+            // ref: https://gist.github.com/femto113/1784503#gistcomment-1222341
+            oResponse.arrarrsColumns = transpose(oReport.arrarrsRows).filter(arrsColumn => arrsColumn.filter(sCell => sCell).length);
 
             oReport.arrarroColumns = oResponse.arrarrsColumns
                 .map((arrsColumnCells, iColumnNumber) => {
@@ -148,9 +149,9 @@ router.post('/split-panel-by-column', upload.single('reportInputData'), (req, re
 
                     if (!sGraphTitle) return;
 
-                    while (i + 1) {
+                    while (i) {
                         arroColumnCells.push({
-                            count: arrsColumnCells.filter(sCell => sCell === i.toString()).length,
+                            count: arrsColumnCells.filter(sCell => sCell.toString() === i.toString()).length,
                             value: i,
                         });
 
