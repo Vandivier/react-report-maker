@@ -101,6 +101,7 @@ export default class extends React.Component {
                 });
             }),
             iMaxX: arroColumnDataByReport.length - 1,
+            iMaxY: this.props.sDataMaxYLinegraph,
             sXAxisLabel: this.props.sDataXAxisLabel,
             sYAxisLabel: this.props.sDataYAxisLabel,
         });

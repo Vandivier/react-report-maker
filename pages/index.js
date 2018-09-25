@@ -14,6 +14,7 @@ export default class extends Page {
         this.state = {
             files: [],
             instance: this,
+            sDataMaxYLinegraph: 10,
             sDataXAxisLabel: 'Value of Response',
             sDataYAxisLabel: 'Frequency of Response',
             sMetaTextUnfilteredAverage: 'Current Period Unfiltered Average Response',

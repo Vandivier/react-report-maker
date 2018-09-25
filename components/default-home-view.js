@@ -418,6 +418,17 @@ export default class extends React.Component {
                                                     value={this.props.sDataYAxisLabel}
                                                 />
                                             </Col>
+                                            <Col xs="12" sm="3">
+                                                <span>Line Graph Maximum Y-Axis Value</span>
+                                            </Col>
+                                            <Col>
+                                                <input
+                                                    name="sDataMaxYLinegraph"
+                                                    onChange={e => this.props.fHandleChange(e)}
+                                                    type="text"
+                                                    value={this.props.sDataMaxYLinegraph}
+                                                />
+                                            </Col>
                                             {/* TODO: implement line graph x variable masking
                                             the idea is you can input 0 and output August, etc.
                                             but that map needs to be input somehow, prob not via same
@@ -576,7 +587,7 @@ export default class extends React.Component {
                                         </Col>
                                         */}
                                             <Col xs="12" sm="3" className="pt-5">
-                                                <span>Maximum Y-Axis Value (eg, Expected Response Count)</span>
+                                                <span>Bar Graph Maximum Y-Axis Value (eg, Expected Response Count)</span>
                                             </Col>
                                             <Col xs="12" sm="3" className="pt-5">
                                                 <span>Report Order Number (0 is Current Period)</span>
