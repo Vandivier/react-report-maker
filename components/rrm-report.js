@@ -202,7 +202,8 @@ export default class extends React.Component {
                     </Container>
 
                     {this.state.arroPanelColumns.map((arroColumnDataByReport, iColumn) => {
-                        const oMassagedData = arroColumnDataByReport[0];
+                        // the last arroColumnDataByReport is the current period
+                        const oMassagedData = arroColumnDataByReport[arroColumnDataByReport.length - 1];
 
                         if (oMassagedData.arriColumnsToExclude.includes(iColumn.toString())) return null;
 

@@ -314,7 +314,6 @@ export default class extends Page {
     };
 
     fHandleReportDataUpload = async files => {
-        const arroExistingReportData = this.state.arroReportDatas || [];
         let arroNewReportDatas = [];
         let arroPromises = [];
         let arroResponses = [];
@@ -333,12 +332,12 @@ export default class extends Page {
         arroResponses = await Promise.all(arroPromises);
 
         if (arroResponses.length) {
-            arroNewReportDatas = this.farrProcessReport(arroExistingReportData.concat(arroResponses));
+            arroNewReportDatas = this.farrProcessReport(arroResponses);
             this.setState({
                 arrFiles: files,
                 arroReportDatas: arroNewReportDatas,
-                iPanelMaxX: arroNewReportDatas[0].iMaxX,
-                sPanelTitle: arroNewReportDatas[0].sReportTitle,
+                iPanelMaxX: arroNewReportDatas[arroNewReportDatas.length - 1].iMaxX,
+                sPanelTitle: arroNewReportDatas[arroNewReportDatas.length - 1].sReportTitle,
             });
         } else {
             // TODO: handle
