@@ -144,7 +144,7 @@ export default class extends Page {
         const name = target.name;
 
         // slice to create clone byval
-        const arroUnfilteredReportDatas = (context.state.arroUnfilteredReportDatas || context.state.arroReportDatas).slice(0);
+        const arroUnfilteredReportDatas = (context.state.arroUnfilteredReportDatas || []).slice(0);
 
         const arroNewReportDatas = arroUnfilteredReportDatas.map(oReportData => {
             // ref, from controller-reports.js
@@ -203,7 +203,6 @@ export default class extends Page {
 
         context.setState({
             arroReportDatas: arroNewReportDatas,
-            arroUnfilteredReportDatas,
             [name]: value,
         });
     };
@@ -236,6 +235,7 @@ export default class extends Page {
             const arroNewReportDatas = this.farrProcessReport(arroResponses[0].arroReportDatas);
             this.setState({
                 arroReportDatas: arroNewReportDatas,
+                arroUnfilteredReportDatas: arroNewReportDatas,
                 [name]: iColumnDiscriminator,
             });
         } else {
@@ -274,7 +274,7 @@ export default class extends Page {
 
     fHandleReportDataAndSettingsUpload = async files => {
         const fileReader = new FileReader();
-        fileReader.readAsText(files[0]);
+        const context = this;
 
         fileReader.onload = event => {
             const oShallowJson = JSON.parse(fileReader.result);
@@ -292,8 +292,10 @@ export default class extends Page {
             // deep json decoding allows us to get 1-layer deep nesting
             // recursion could allow more
             // depends on hungarian convention
-            this.setState(oDeepJson);
+            context.setState(oDeepJson);
         };
+
+        fileReader.readAsText(files[0]);
     };
 
     // TODO: maybe some code dup with farrProcessReport
@@ -339,6 +341,7 @@ export default class extends Page {
             this.setState({
                 arrFiles: files,
                 arroReportDatas: arroNewReportDatas,
+                arroUnfilteredReportDatas: arroNewReportDatas,
                 iPanelMaxX: arroNewReportDatas[arroNewReportDatas.length - 1].iMaxX,
                 sPanelTitle: arroNewReportDatas[arroNewReportDatas.length - 1].sReportTitle,
             });

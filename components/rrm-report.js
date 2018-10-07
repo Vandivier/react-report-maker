@@ -28,12 +28,14 @@ export default class extends React.Component {
     //      but, we could loop through all reports and create a superset of questions/columns that exist on any report
     // TODO: prerender bar charts for all t, unless it creates perf load or extreme file size bloat
     fParsePanelColumns() {
+        const context = this;
+
         this.state.arroPanelColumns = [];
 
         this.props.arroReportDatas.forEach(oReportData => {
             oReportData.arrarroColumns.map((oGraphData, iColumn) => {
-                this.state.arroPanelColumns[iColumn] = this.state.arroPanelColumns[iColumn] || [];
-                this.state.arroPanelColumns[iColumn].push(this.foBarGraphProps(oReportData, oGraphData));
+                context.state.arroPanelColumns[iColumn] = context.state.arroPanelColumns[iColumn] || [];
+                context.state.arroPanelColumns[iColumn].push(context.foBarGraphProps(oReportData, oGraphData));
             });
         });
     }
@@ -206,7 +208,9 @@ export default class extends React.Component {
                         // the last arroColumnDataByReport is the current period
                         const oMassagedData = arroColumnDataByReport[arroColumnDataByReport.length - 1];
 
-                        if (oMassagedData.arriColumnsToExclude.includes(iColumn.toString())) return null;
+                        if (oMassagedData.arriColumnsToExclude && oMassagedData.arriColumnsToExclude.includes(iColumn.toString())) {
+                            return null;
+                        }
 
                         return (
                             <Container key={'graph-container-' + iColumn} style={{ marginTop: 70 }}>
