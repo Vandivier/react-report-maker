@@ -57,6 +57,7 @@ export default class extends Page {
         this.setState({ arroLabelMasks: (this.state.arroLabelMasks || []).concat([{}]) });
     };
 
+    // note: must upload png image or u will have trouble downloading settings
     fDownload = (filename, text) => {
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
