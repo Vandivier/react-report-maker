@@ -4,76 +4,9 @@
 
 ## How to use
 
-### Using `create-next-app`
+Install NodeJS, recommended version 10 or 11. You will also need Git. You can optionally install a Git GUI tool such as Tortoise Git.
 
-Execute [`create-next-app`](https://github.com/segmentio/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
-
-```bash
-npx create-next-app --example root-static-files root-static-files-app
-# or
-yarn create next-app --example root-static-files root-static-files-app
-```
-
-### Download manually
-
-Download the example:
-
-```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/custom-server
-cd custom-server
-```
-
-Install it and run:
-
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
-```
-
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download))
-
-```bash
-now
-```
-
-## The idea behind the example
-
-This example demonstrates how to serve files such as /robots.txt and /sitemap.xml from the root.
-
-# other README, concat'ed
-
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
-
-# Next.js Starter Project
-
-This is a starter project for React that uses Next.js.
-
-It includes the following features:
-
--   Authentication via Email, Facebook, Twitter and Google+ (using Express and Passport).
--   Basic account management (update details, link/unlink accounts, delete account).
--   Session support with secure HTTP Only cookies.
--   CSRF Tokens.
--   Bootstrap 4 and Reactstrap (Bootstrap components for React).
--   SCSS, with live reloading.
--   Comes with Ionicons icon font and shows how to bundle other CSS and fonts.
-
-You can see a live demo at **https://nextjs-starter.now.sh**
-
-## About
-
-Next.js is a framework that makes it easy to create Universal web apps in React. With Next.js, React pages are automatically rendered on both client and server side, without the hassle of setting up dependancies like webpack or babel and with automatic routing.
-
-This is a starter project that provides an example of how to use Next.js with Express (the popular web server framework for Node.js), with SCSS, Bootstrap, reactstrap (Boostrap 4 for React), the Ionicons icon set, how to include data from remote REST APIs and incorporates an authentication system that supports both oAuth and Email using Passport (a popular authentication framework for Node.js).
-
-This project exists to make it easier to get started with creating universal apps in React. You are invited to use it as a reference or to copy it and use it as a base for your own projects. Contributions to improve this project are welcome.
-
-## Running locally in development mode
-
-To get started, just clone the repository and run `npm install && npm run dev`:
+Then clone the repository and run `npm install && npm run dev`:
 
     git clone https://github.com/iaincollins/nextjs-starter.git
     npm install
