@@ -31,7 +31,7 @@ export default class extends Page {
             siThemeChartBarWidth: '50',
             siThemeChartHeight: '500',
             siThemeChartWidth: '1000',
-            fsThemeColorWithAlpha: function(sThemeColor, sAlpha) {
+            fsThemeColorWithAlpha: function (sThemeColor, sAlpha) {
                 let sRgb =
                     (this[sThemeColor] && this[sThemeColor].split('rgb(')[1] && this[sThemeColor].split('rgb(')[1].split(')')[0]) ||
                     '0,0,0'; // default to black
@@ -42,6 +42,7 @@ export default class extends Page {
 
         // TODO: can we .bind(this) when passing in component?
         this.fDownload = this.fDownload.bind(this);
+        this.fDownloadHtml = this.fDownloadHtml.bind(this);
         this.fHandleArrayChange = this.fHandleArrayChange.bind(this);
         this.fHandleChange = this.fHandleChange.bind(this);
         this.fHandleDownloadReportClick = this.fHandleDownloadReportClick.bind(this);
@@ -61,6 +62,20 @@ export default class extends Page {
     fDownload = (filename, text) => {
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    };
+
+    // note: must upload png image or u will have trouble downloading settings
+    fDownloadHtml = (filename, text) => {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/html;charset=utf-8,' + text);
         element.setAttribute('download', filename);
 
         element.style.display = 'none';
@@ -407,7 +422,7 @@ export default class extends Page {
 
         elShadowDocument.appendChild(this.felInjectOfflineReportScript());
 
-        this.fDownload(sFileName + '.html', elShadowDocument.innerHTML);
+        this.fDownloadHtml(sFileName + '.html', elShadowDocument.innerHTML);
     };
 
     // inject a script tag which allows offline report toggle
