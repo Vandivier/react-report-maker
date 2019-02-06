@@ -126,9 +126,9 @@ export default class extends React.Component {
             >
                 <style>{this.props.sThemeCustomStyle}</style>
                 {/* TODO: inject arbitrary html, js, and css here */}
-                {this.props.imageHeaderBas64Source && (
+                {this.props.imageHeaderBase64Source && (
                     <img
-                        src={this.props.imageHeaderBas64Source}
+                        src={this.props.imageHeaderBase64Source}
                         style={{
                             width: '100%',
                         }}
@@ -139,17 +139,17 @@ export default class extends React.Component {
                     style={
                         this.props.bUseGradientBackground
                             ? {
-                                  background:
-                                      'radial-gradient(ellipse at center, ' +
-                                      this.props.fsThemeColorWithAlpha('sThemeColorOffWhite', 0) +
-                                      ' 0%,' +
-                                      this.props.fsThemeColorWithAlpha('sThemeColorOffWhite', 1) +
-                                      ' 100%)',
-                                  boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
-                              }
+                                background:
+                                    'radial-gradient(ellipse at center, ' +
+                                    this.props.fsThemeColorWithAlpha('sThemeColorOffWhite', 0) +
+                                    ' 0%,' +
+                                    this.props.fsThemeColorWithAlpha('sThemeColorOffWhite', 1) +
+                                    ' 100%)',
+                                boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
+                            }
                             : {
-                                  backgroundColor: this.props.sThemeColorOffWhite,
-                              }
+                                backgroundColor: this.props.sThemeColorOffWhite,
+                            }
                     }
                 >
                     <Container style={{ marginBottom: 20 }}>

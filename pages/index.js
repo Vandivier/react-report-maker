@@ -377,7 +377,7 @@ export default class extends Page {
 
         fileReader.onload = event => {
             this.setState({
-                imageHeaderBas64Source: fileReader.result,
+                imageHeaderBase64Source: fileReader.result,
             });
         };
     };
