@@ -31,17 +31,17 @@ export default class extends React.Component {
                     style={
                         this.props.bUseGradientBackground
                             ? {
-                                  background:
-                                      'radial-gradient(ellipse at center, ' +
-                                      this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 0) +
-                                      ' 0%,' +
-                                      this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 1) +
-                                      ' 100%)',
-                                  boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
-                              }
+                                background:
+                                    'radial-gradient(ellipse at center, ' +
+                                    this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 0) +
+                                    ' 0%,' +
+                                    this.props.fsThemeColorWithAlpha('sThemeColorOffGrey', 1) +
+                                    ' 100%)',
+                                boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)',
+                            }
                             : {
-                                  backgroundColor: this.props.sThemeColorOffGrey,
-                              }
+                                backgroundColor: this.props.sThemeColorOffGrey,
+                            }
                     }
                 >
                     <Container className="mt-2 mb-2">
