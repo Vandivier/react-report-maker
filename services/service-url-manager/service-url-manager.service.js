@@ -28,7 +28,9 @@ export class ServiceUrlManager {
                 // litteral url
                 vUrl = sUrlKey;
             } else {
-                // use oUrlMap
+                // TODO: standardize url map usage or remove
+                // note: currently deprecated. empty object added simply to sync w rrm and prevent breaking.
+                const oUrlMap = {}
                 vUrl = oUrlMap[sUrlKey] ? oUrlMap[sUrlKey] : sUrlKey;
             }
         }
@@ -143,7 +145,7 @@ export class ServiceUrlManager {
 
     // ref: https://stackoverflow.com/questions/2144386/how-to-delete-a-cookie
     fDeleteCookie(sCookieName) {
-        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = sCookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
     fSetIsProdLike() {
